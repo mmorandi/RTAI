@@ -1,0 +1,434 @@
+========================================================
+RTAI & Comedi & Matlab on Ubuntu Gutsy - 2008-02-24 - V3
+By Arno Stienen  arnoreg at gmail dot com
+========================================================
+
+==============
+* Introduction
+==============
+
+This guide will compile and install all the packages need to use RTAI
+with Simulink on an Ubuntu machine. Always check if newer versions of
+MesaLib and RTAI can be found on their websites, and adjust the
+commands as required.
+
+The guide uses the checkinstall program to create installable
+packages. Each time, customize your package to your liking, but as a
+general rule, you should use these values:
+
+0. Maintainer   Your Name (youremail@address.com)
+1. Summary      Use a short description as found in the source, on the
+                website, or how you best remember it. 
+2. Name         In this guide, resp. mesalib-standalone, eftlk,
+                comedilib, comedi-calibrate, rtai-bare, comedi, rtai. 
+3. Version      Either the version number ('7.0.2') or the cvs
+                download date ('cvs20080203'). 
+
+==============
+* Preparations
+==============
+
+Possibly comment out the CD-ROM line in the list with repositories by
+prefixing it with a '#':
+
+       sudo nano /etc/apt/sources.list
+
+Take ownership of the source directories (replace [yourusername] with
+your own user name): 
+
+       sudo chown -R [yourusername]:[yourusername] /usr/local/src /usr/src
+
+Install the required packages (from a default Ubuntu 7.10 system):
+
+       sudo apt-get install cvs subversion build-essential automake checkinstall x11proto-xext-dev xlibs-static-dev libxext-dev libxt-dev gettext libncurses5-dev fakeroot kernel-package swig python-dev libtool libboost-program-options-de libgsl0-dev libxmu-dev libxi-dev
+
+These packages will also install automatically:
+
+General:
+ cvs
+ subversion            --> libapr1 libaprutil1 libpq5 libsvn1
+ build-essential       --> dpkg-dev g++ g++-4.1 libc6-dev libstdc++6-4.1-dev linux-libc-dev patch
+ automake              --> autoconf autotools-dev m4
+ checkinstall
+MesaLib:
+ x11proto-xext-dev     --> libxau-dev x11proto-core-dev x11proto-input-dev
+ xlibs-static-dev      --> libfontenc-dev libfreetype6-dev libx11-dev libxdmcp-dev libxfont-dev x11proto-fonts-dev x11proto-kb-dev xtrans-dev zlib1g-dev
+ libxext-dev
+ libxt-dev             --> libice-dev libsm-dev
+EFLTK:
+ gettext
+Linux Kernel:
+ libncurses5-dev
+ fakeroot
+ kernel-package        --> intltool-debian po-debconf
+Comedilib
+ swig
+ python-dev            --> python2.5-dev
+ libtool
+Comedi Calibrate:
+ libboost-program-options-dev  --> libboost-dev libboost-program-options1.34.1
+ libgsl0-dev
+RTAI
+ libxmu-dev            --> libxmu-headers
+ libxi-dev
+
+=========
+* MesaLib
+=========
+
+       cd /usr/local/src
+
+Download MesaLib-7.0.2.tar.bz2 from
+http://sourceforge.net/projects/mesa3d to current directory. 
+
+       tar jxf MesaLib-7.0.2.tar.bz2
+       cd Mesa-7.0.2
+       make realclean
+
+For Mesalib 7.0.2, insert the non-indented lines via nano to a new
+file (skip this step for 7.0.3, continuing at the make linux-x86): 
+
+       nano src/glw/glw.pc.in
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+prefix=@INSTALL_DIR@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/@LIB_DIR@
+includedir=${prefix}/include
+
+Name: glw
+Description: Mesa OpenGL widget library
+Requires: gl
+Version: @VERSION@
+Libs: -L${libdir} -lGLw
+Cflags: -I${includedir}
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       make linux-x86
+       sudo checkinstall     # Use 'mesalib-standalone' as name; 
+                             # for other values, see introduction.
+
+=======
+* EFLTK
+=======
+(Based on http://equinox-project.org/cgi-bin/trac.cgi/wiki/UbuntuInstallation)
+
+Download to folder with current date, compile and install:
+
+       cd /usr/local/src
+       svn co https://ede.svn.sourceforge.net/svnroot/ede/trunk/efltk
+       cd efltk
+       autoconf
+
+Configure (--enable-xft doesn't work on Ubuntu 7.10):
+
+       ./configure --disable-mysql --disable-unixODBC
+       ./emake
+       sudo checkinstall bash emake install   # Use 'efltk' as name; 
+                                          for other values, see introduction.
+
+Add '/usr/local/lib' to /etc/ld.so.conf:
+
+       sudo nano /etc/ld.so.conf
+       sudo ldconfig
+
+===============
+* Download RTAI
+===============
+
+Download RTAI (check for latest version in https://www.rtai.org/RTAI):
+
+       cd /usr/local/src
+       wget --no-check-certificate https://www.rtai.org/RTAI/rtai-3.6.tar.bz2
+       tar xjf rtai-3.6.tar.bz2
+       ln -s rtai-3.6 rtai
+
+==================
+* Linux Kernel 2.6
+==================
+
+Check kernel version numbers of available RTAI patches:
+
+       ls /usr/local/src/rtai/base/arch/i386/patches/
+
+and look for kernel version numbers in: hal-linux-[kernel-version].patch. 
+Download one of these kernels from http://www.kernel.org 
+(do not use Ubuntu kernel sources!). 
+You should get a 2.6.x version of the kernel, but a more recent
+2.6.x.y version may work too. Here the version number of the current
+Ubuntu Gutsy kernel is used.
+
+       cd /usr/src
+       wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.22.14.tar.bz2
+       tar xjf linux-2.6.22.14.tar.bz2
+       mv linux-2.6.22.14 linux-2.6.22.14-rtai
+       ln -s linux-2.6.22.14-rtai linux
+
+Patch the kernel with a patch with the same 2.6.x number:
+
+       cd /usr/src/linux
+       patch -p1 < /usr/local/src/rtai/base/arch/i386/patches/hal-linux-2.6.22-i386-1.10-12.patch
+
+If you use the 2.6.x kernel, the patch should work perfectly. For a
+2.6.x.y kernel, you may get some Hunk-succeeded messages (which are
+okay), but if you get real errors, redo the process with a 2.6.x (no
+.y) kernel. 
+
+Copy the original Ubuntu kernel configurations (press
+enter at every 'make oldconfig' question): 
+
+       cp /boot/config-`uname -r` .config
+       make oldconfig
+       make menuconfig
+
+Configure the kernel. Use these settings:
+- Loadable module support ---> Module versioning support ---> disabled
+- Processor type and features ---> Preemption Model 
+   ---> Preemptible Kernel (Low-Latency Desktop)
+- Processor type and features ---> Interrupt pipeline ---> enabled
+- Power management options (ACPI, APM) 
+   ---> Legacy Power Management API ---> disabled
+- Power management options (ACPI, APM) ---> Software Suspend ---> disabled
+- Power management options (ACPI, APM) 
+   ---> ACPI (Advanced Configuration and Power Interface) Support 
+   ---> ACPI Support ---> disabled
+- Power management options (ACPI, APM) 
+   ---> APM (Advanced Power Management) BIOS Support 
+   ---> APM BIOS Support ---> disabled
+- Power management options (ACPI, APM) 
+   ---> CPU Frequency scaling ---> CPU Frequency scaling ---> disabled
+- Power management options (ACPI, APM) 
+   ---> Power Management support ---> disabled
+
+For non-SMP systems (for instance, single processor P3 or P4 machines 
+(UPC - UniProcessor)), disable symmetric multi-processing support:
+- Processor type and features 
+   ---> Symmetric multi-processing support ---> disabled
+
+Choose the exact processor flavour for your machine. For example, for
+a Core2Duo processor:
+- Processor type and features ---> Processor family ---> Core 2/Newer Xeon
+
+Create and install Ubuntu kernel package (kernel_source can also be added
+to the same make-kpkg line, but are not needed):
+
+       sudo make-kpkg clean
+       make-kpkg --rootcmd fakeroot --append-to-version -rtai36-core2 --revision r1 --initrd kernel_image kernel_headers
+       sudo dpkg -i linux-headers-2.6.22.14-rtai36-core2_r1_i386.deb linux-image-2.6.22.14-rtai36-core2_r1_i386.deb
+       sudo reboot
+
+===========
+* Comedilib
+===========
+
+Download Comedi source (press enter when asked for cvs password, and ignore any warnings):
+
+       cd /usr/local/src
+       cvs -d :pserver:anonymous@cvs.comedi.org:/cvs/comedi login
+       cvs -d :pserver:anonymous@cvs.comedi.org:/cvs/comedi co comedi
+       cvs -d :pserver:anonymous@cvs.comedi.org:/cvs/comedi co comedilib
+       cvs -d :pserver:anonymous@cvs.comedi.org:/cvs/comedi co comedi_calibrate
+
+Make and install comedilib.
+
+       cd comedilib
+       sh autogen.sh
+       ./configure --sysconfdir=/etc
+       make
+       sudo checkinstall # Use 'comedilib' as name; for other values, see introduction.
+
+Make and install comedi_calibrate
+
+       cd ../comedi_calibrate
+       automake --add-missing
+       autoreconf
+       ./configure
+       make
+       sudo checkinstall # Use 'comedi-calibrate' as name; for other values, see introduction.
+       mkdir -p /usr/local/var/lib/comedi/calibrations/
+======
+* RTAI
+======
+
+Make and install RTAI (for now without Comedi-support or RTAI-Lab)
+
+       cd /usr/local/src/rtai
+       make menuconfig
+
+Configure, optionally adjusting:
+- Menu Machine (x86): adjust Number of CPUs (default = 2)
+
+       make
+       sudo checkinstall --fstrans=no # Use 'rtai-bare' as name; for other values, see introduction.
+
+Add ':/usr/realtime/bin' to the path variable in '/etc/environment':
+
+       sudo nano /etc/environment
+
+========
+* Comedi
+========
+
+       cd /usr/local/src/comedi
+       sh autogen.sh
+       ./configure --enable-kbuild --disable-pcmcia
+       make
+
+Create install script:
+
+       nano install-rtai
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+#!/bin/bash
+make install
+cp include/linux/comedi.h include/linux/comedilib.h /usr/local/include
+mkdir -p /usr/local/include/linux
+ln -sf /usr/local/include/comedi.h /usr/local/include/linux/comedi.h
+ln -sf /usr/local/include/comedilib.h /usr/local/include/linux/comedilib.h
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       sudo checkinstall --install-no --fstrans=no bash install-rtai 
+                # Use 'comedi' as name; for other values, see introduction.
+       sudo dpkg --force-overwrite -i comedi*.deb
+       make dev
+
+==========
+* RTAI-Lab
+==========
+
+       cd /usr/local/src/rtai
+       sudo chown -R [yourusername]:[yourusername] *
+       make distclean
+       make menuconfig
+
+Configure RTAI. Use these settings:
+- Menu Add-ons: Select COMEDI support over LXRT
+- Menu Add-ons: Specify COMEDI installation directory (/usr/local).
+- Menu RTAI-Lab: Select RTAI Lab
+- Menu RTAI-Lab: Adjust EFLTK installation directory (default is /usr/local)
+
+       make
+       sudo apt-get remove rtai-bare # First remove the RTAI package without RTAI-Lab and Comedi support.
+       sudo checkinstall --fstrans=no # Use 'rtai' as name; for other values, see introduction.
+
+==================
+* RTAI in Simulink
+==================
+
+See the instructions in /usr/local/src/rtai/rtai-lab/matlab/.
+
+===================
+* Post Installation
+===================
+
+If you installed the Comedi packages without going throught the
+compile steps, you'll need to make the dev links. 
+Create and run: 
+
+       nano makedev
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+#!/bin/bash
+for i in `seq 0 15`; do \
+       mknod -m 666 /dev/comedi$$i c 98 $$i \
+       ; \
+done;
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       chmod +x makedev
+       sudo ./makedev
+
+Change the first line of '/usr/realtime/bin/rtai-load' from
+'#!/bin/sh' into '#!/bin/bash', or else RTAI will hang under Ubuntu: 
+
+       sudo nano /usr/realtime/bin/rtai-load
+
+Measure your system's latency to real-time interrupts:
+
+       cd /usr/realtime/testsuite/kern/latency
+       ./run
+
+Calibrate RTAI, remember the results of the calibrations. At this
+moment, this step should be skipped for kernels > 2.6.22: 
+
+       sudo insmod /usr/realtime/modules/rtai_hal.ko
+       sudo insmod /usr/realtime/modules/rtai_lxrt.ko
+       sudo insmod /usr/realtime/modules/rtai_fifos.ko
+       sudo insmod /usr/realtime/modules/rtai_calibrate.ko
+
+       calibrate -c    # => VALUE_FOR_CPU_FREQUENCY
+       calibrate -a    # => VALUE_FOR_THE_APIC
+       calibrate -r    # => SETUP_TIMER_VALUE
+       calibrate -k    # => SETUP_LATENCY_VALUE
+
+       sudo rmmod rtai_hal
+       sudo rmmod rtai_lxrt
+       sudo rmmod rtai_fifos
+       sudo rmmod rtai_calibrate
+
+Copy the following lines in a rlinsmod script, replacing the variables
+in FULL_CAPS with the above found values. 
+
+       sudo nano /usr/realtime/bin/rlinsmod
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+# RLINSMOD - RTAI-Lab Insmod.
+# Inserts RTAI-Lab and Comedi modules in kernel and
+# configures the drivers.
+
+/sbin/insmod /usr/realtime/modules/rtai_smi.ko rtai_cpufreq_arg=VALUE_FOR_CPU_FREQUENCY
+/sbin/insmod /usr/realtime/modules/rtai_hal.ko rtai_apicfreq_arg=VALUE_FOR_THE_APIC
+/sbin/insmod /usr/realtime/modules/rtai_lxrt.ko SetupTimeTIMER=SETUP_TIMER_VALUE Latency=SETUP_LATENCY_VALUE
+/sbin/insmod /usr/realtime/modules/rtai_fifos.ko
+/sbin/insmod /usr/realtime/modules/rtai_sem.ko
+/sbin/insmod /usr/realtime/modules/rtai_mbx.ko
+/sbin/insmod /usr/realtime/modules/rtai_msg.ko
+/sbin/insmod /usr/realtime/modules/rtai_netrpc.ko
+/sbin/insmod /usr/realtime/modules/rtai_shm.ko
+/sbin/modprobe comedi
+/sbin/modprobe kcomedilib
+/sbin/insmod /usr/realtime/modules/rtai_comedi.ko
+# Hardware dependent lines below. This example is for a NI PCI 6025 DAQ Card.
+/sbin/modprobe ni_pcimio
+/usr/local/sbin/comedi_config -q /dev/comedi0 ni_pcimio
+/usr/local/bin/comedi_calibrate -q -f /dev/comedi0
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       sudo chmod +x /usr/realtime/bin/rlinsmod
+
+Copy the following lines in a rlrmmod script.
+
+       sudo nano /usr/realtime/bin/rlrmmod
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+# RLRMMOD - RTAI-Lab Rmmod.
+# Removes RTAI-Lab and Comedi modules from kernel.
+
+/usr/local/sbin/comedi_config -qr /dev/comedi0
+
+/sbin/modprobe -r ni_pcimio
+
+/sbin/rmmod rtai_comedi
+/sbin/modprobe -r kcomedilib
+/sbin/modprobe -r comedi
+/sbin/rmmod rtai_shm
+/sbin/rmmod rtai_netrpc
+/sbin/rmmod rtai_msg
+/sbin/rmmod rtai_mbx
+/sbin/rmmod rtai_sem
+/sbin/rmmod rtai_fifos
+/sbin/rmmod rtai_lxrt
+/sbin/rmmod rtai_hal
+/sbin/rmmod smi_rt
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       sudo chmod +x /usr/realtime/bin/rlrmmod
+
+Start rlinsmod after every boot by adding the line '/usr/realtime/bin/rlinsmod' 
+(without the quotes) to your rc.local file. Place this line above the 'exit 0' line.
+
+       sudo nano /etc/rc.local
+
+======
+* Done
+======

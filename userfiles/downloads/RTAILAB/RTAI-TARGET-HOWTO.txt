@@ -1,0 +1,891 @@
+                  STEP BY STEP RTAI TARGET FOR BEGINNERS
+            (c) 2006 Giampiero Campa campa at cemr dot wvu dot edu
+
+STEP 1 - Install Linux
+----------------------
+
+    Any recent distribution is supposed to be ok, however it is 
+    extremely common to run into problems related to the particular
+    machine+kernel+compiler+distribution combination that you will be using.
+
+    I would suggest using a distribution that was released before the
+    last rtai version. I am currently using Fedora 3, since i have 
+    personally found slightly less problems with the RedHat-Fedora line.
+
+    Be sure to install both the 'x' and 'qt' developement packages. 
+
+    Also, keep in mind that older distributions based on 2.4 or 2.2 kernels 
+    require slightly different procedures for most of the points below.
+
+    In what follows, the shell prompt sign is indicated with the symbol "$". 
+
+
+STEP 2 - Download and unpack RTAI
+---------------------------------
+
+    Go to http://www.rtai.org/   and look for the newest version 
+    (3.3 or greater).
+    
+    You should unpack your RTAI source in /usr/src, (standard /usr/src use),
+    so AS ROOT, download the rtai-x.x.tar.bz2 file into /usr/src
+    and then unpack it using the following commands in a terminal window :
+    
+    $ cd /usr/src
+    $ tar --bzip2 -xvf rtai-x.x.tar.bz2
+    
+    Create a symbolic link to the new rtai directory, 
+    since it will be useful later:
+   
+    $ rm -f rtai 
+    $ ln -fs rtai-x.x rtai
+ 
+    After that, have a look in the directory 
+    /usr/src/rtai/base/arch/i386/patches/ 
+    to locate the patches for the supported kernels.
+
+    You can have a look at the README.INSTALL file in the 
+    rtai root folder for advanced installation options.
+
+
+STEP 3 - Download and unpack a new Kernel
+-----------------------------------------
+
+    Never use the kernel that comes with the distribution,
+    always download a new kernel from http://www.kernel.org/
+    
+    Make sure that the kernel is actually supported by RTAI
+    that is make sure that a patch exist for that kernel.
+    The first three numbers in the kernel have to match the
+    first three numbers in the patch. If more than one patch 
+    exist with the same first three numbers pick the last one.
+    If more than one kernel exist with the same first three numbers
+    it is safer to pick the base version (i.e. the one that does not
+    have the fourth number).
+
+    For example, the following patches exist for the 2.6.15 kernels
+    in the /usr/src/rtai/base/arch/i386/patches/ directory:
+    hal-linux-2.6.15-i386-1.1-03.patch and hal-linux-2.6.15-i386-1.2-00.patch
+    so the last patch should be used, with the base kernel 2.6.15, although 
+    it should work fine with kernels until 2.6.15.7 too.
+
+    Again, source code traditionally go in /usr/src, so, as root, 
+    download the kernel (linux-x.x.xx.tar.bz2) into /usr/src 
+    and do the following:
+
+    $ cd /usr/src
+    $ tar --bzip2 -xvf linux-x.x.xx.tar.bz2
+
+    You need to set a symbolic link to the new linux root folder
+    since it's needed later:
+
+    $ rm -f linux
+    $ ln -fs linux-x.x.xx linux
+
+
+STEP 4 - Patch your Kernel
+--------------------------
+
+    Again, as root (assuming an x86 architecture):
+
+    $ cd /usr/src/linux
+    $ patch -p1 < /usr/src/rtai/base/arch/i386/patches/hal-linux-x.x.xx_rx.patch
+
+
+STEP 5 - Configure your Kernel
+------------------------------
+
+    Again, as root:
+    
+    $ cd /usr/src/linux
+    
+    It is a good idea to copy the distribution .config file into the linux folder,
+    so one could start configuring something that already works:
+
+    $ cp -f /boot/config-x.x.xx-x.xxx .config
+    
+    However, that is not striclty necessary, so you can safely skip the previous step.
+    Then, to configure the kernel do the following:
+
+    $ make config (or make menuconfig or make xconfig)
+
+    In the code maturity level options, set the "prompt for development and/or
+    incomplete code/drivers" option to 'yes'. In the "loadable module support" section,
+    make sure that the "Enable loadable module support" is set to 'yes', and set the 
+    "Module Versioning support" is to 'no'. In the "processor type and features" section,
+    set the "Preemptible kernel" and the "Use register arguments" options to 'no',
+    and make sure to set the "interrupt pipeline" option, (aka IPIPE) to 'yes'.
+    Finally, make sure that the "/proc file system support", under the 
+    "Pseudo filesystems" subsection of the "File systems" section is set to yes.
+
+    Remember to save the kernel configuration on exit.
+
+
+STEP 6 - Compile and install your Kernel
+----------------------------------------
+
+    Again, as root :
+
+    $ cd /usr/src/linux
+
+    then compile the kernel:
+
+    $ make clean && make && make modules_install && make install 
+
+    if everything goes fine (i.e. no errors encountered), 
+    the new kernel image, together with its system map file, should
+    appear in the boot directory, and the boot loader configuration file
+    (/etc/grub.conf if you are using fedora), will be changed to allow 
+    booting with the new kernel.
+
+    Now reboot:
+
+    $ /sbin/reboot
+
+    (make sure to reboot into your new rtai-patched-kernel).
+
+    If everything works fine, it is a good idea to copy the 
+    configuration file for future reference, so as root:
+
+    $ cd /usr/src/linux
+    $ cp -f .config config-my-rtlx-yy.txt
+
+    It is also a good idea to change the name of the kernel image, 
+    ramdisk image, and system.map so that they won't be overwritten 
+    the next time you compile a new kernel, so as root:
+
+    $ cd /boot
+    
+    $ cp -f vmlinuz-x.x.xx my-rtlx-yy
+    $ cp -f initrd-x.x.xx.img my-inrd-yy.img
+    $ cp -f System.map-x.x.xx System.map-my-rtlx-yy
+
+    Of course you have to edit accordingly the boot configuration file,
+    for example under Fedora Core 3, assuming grub is your boot loader,
+    you can copy the automatically added entry, relative to the new kernel, 
+    which is usually the first one, to a new entry that won't be overwritten
+    when you compile and install a new kernel.
+    For example this is a velid entry for the grub bootloader in /etc/grub.conf :
+
+    title my-rtlx-xx (2.6.9-adeos)
+        root (hd0,0)
+        kernel /my-rtlx-xx ro root=/dev/VolGroup00/LogVol00 rhgb quiet
+        initrd /my-inrd-xx.img
+
+    reboot again chosing the entry you just added to make sure everything 
+    works as it should.
+
+
+STEP 7 - Download and install the MESA library
+----------------------------------------------
+
+    At this point, if your system already has some pre-installed
+    version of the mesa library, the thing that makes most sense
+    is to try to skip this step, and only later on, if step 8 
+    fails due to a Mesa library that's too new for efltk to compile,
+    return here and install MesaLib-6.2.tar.gz, in any case,
+    whatever you do, do not uninstall the preinstalled MesaLib.
+
+    Download MesaLib-6.2.tar.gz (from www.mesa3d.org)
+    in a temporary directory (/tmp), then, as root :
+
+    $ cd /tmp
+    $ tar xvzf MesaLib-6.2.tar.gz
+    $ cd Mesa-6.2
+    $ make linux-x86-static
+    $ make install
+
+    Accept the default locations for the header and library files.
+    After the installation reboot and make sure everything works.
+
+
+STEP 8 - Download and install the EFLTK package
+-----------------------------------------------
+
+    As root, download EFLTK from CVS in a temporary directory (/tmp)
+
+    $ cd /tmp    
+    $ cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/ede login
+      (press ENTER when CVS asks for password)
+    $ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/ede co efltk
+    $ cd efltk
+    $ ./efltk-config.in --prefix=/usr/local --multithread 
+    $ ./emake
+    $ ./emake install
+
+    add the line /usr/local/lib/ to the file /etc/ld.so.conf
+    the entries in the file should look more or less like this:
+    
+    /usr/local/lib
+    include ld.so.conf.d/*.conf
+    /usr/X11R6/lib
+    /usr/lib/wine
+
+    then run ldconfig to update the library database:
+
+    $ /sbin/ldconfig
+
+    Again, reboot and make sure everything works fine.
+
+
+STEP 9 - Configure and install RTAI
+------------------------------------
+
+    Again, as root :
+
+    $ cd /usr/src/rtai
+    $ make config (or make menuconfig of make xconfig)
+    
+    In the Machine Menu adjust the number of processors. 
+    Say yes to rtai lab, and leave the efltk folder to /usr/local
+    Do not include comedi support at this time even if you plan to use it later.
+    Do not change any other default choice unless you know what you are doing.
+    
+    $ make
+    $ make install
+
+    reboot :
+
+    $ /usr/bin/reboot
+
+
+STEP 10 - Test the RTAI installation
+------------------------------------
+
+    Again, as root, make sure you are running the patched kernel, then :
+    
+    $ cd /usr/realtime/testsuite/user/latency
+    $ ./run (use ctrl-c to stop it)
+    
+    $ cd /usr/realtime/testsuite/user/preempt
+    $ ./run (use ctrl-c to stop it)
+    
+    $ cd /usr/realtime/testsuite/user/switches
+    $ ./run (use ctrl-c to stop it)
+    
+    $ cd /usr/realtime/testsuite/kern/latency
+    $ ./run (use ctrl-c to stop it)
+    
+    $ cd /usr/realtime/testsuite/kern/preempt
+    $ ./run (use ctrl-c to stop it)
+    
+    $ cd /usr/realtime/testsuite/kern/switches
+    $ ./run (use ctrl-c to stop it)
+    
+    make sure that there are no errors.
+    
+    Somtimes there could be errors opening FIFOs due to the fact that entries 
+    like /dev/rtf/0 are not persistent, so they get deleted after a reboot.
+    If that's the case, you should include code to recreate those entries in
+    /etc/rc.d/rc.local to make sure that they are recreated everytime,
+    see http://www.captain.at/rtai-error-opening-dev-rtf.php for example.
+
+
+STEP 11 - Download, unpack and install Comedi and Comedilib
+----------------------------------------------------------
+
+    If you are new to Linux and RTAI i strongly suggest 
+    that you SKIP this step since you do not need 
+    comedi or comedilib to use or learn RTAI.
+    
+    However, if you plan to use comedi, this is the right
+    time to download and install comedi and comedilib.
+    The reference web site is http://www.comedi.org/ 
+    
+    You should unpack the newest source in /usr/src,
+    so AS ROOT, dowload both comedi-x.x.xx.tar.gz and 
+    comedilib-x.x.xx.tar.gz files into /usr/src
+    and then unpack them using the following commands (still as root):
+    
+    $ cd /usr/src
+    $ tar -xzvf comedi-x.x.xx.tar.gz
+    $ tar -xzvf comedilib-x.x.xx.tar.gz
+   
+    Create a symbolic link to comedi since it will be useful later:
+    
+    $ rm -f comedi
+    $ ln -fs comedi-x.x-xx comedi
+
+    If your comedi version is 0.7.70 (or older) then you should manually
+    edit the /usr/src/linux/.config file and add the line:
+    CONFIG_RTHAL=Y
+    
+    At this point you are ready to configure and install 
+    both comedilib and comedi:
+ 
+    $ cd /usr/src/comedilib-x.x.xx
+    $ ./configure --sysconfdir=/etc
+    $ make
+    $ make install
+    $ make dev
+    
+    $ cd /usr/src/comedi
+    $ ./configure --with-linuxdir=/usr/src/linux --with-rtaidir=/usr/realtime
+    $ make
+    $ make install
+
+    $ cp include/linux/comedi.h /usr/include/
+    $ cp include/linux/comedilib.h /usr/include/
+
+    $ mkdir /usr/local/include/linux
+    $ ln -s /usr/include/comedi.h /usr/local/include/linux/comedi.h
+    $ ln -s /usr/include/comedilib.h /usr/local/include/linux/comedilib.h
+    
+    Reboot and make sure everything works fine.
+
+    At this point, you have to add comedi to the rtai configuration,
+    so, as root:
+
+    $ cd /usr/src/rtai
+    $ make config (or make menuconfig of make xconfig)
+    
+    In the Add-ons Menu select Comedi support over LXRT,
+    and specify the comedi installation directory,
+    (typically /usr/local, in any case it should contain 
+    lib/libcomedi.a include/linux/comedilib.h and include/linux/comedi.h
+    Then recompile and install rtai:
+
+    $ make
+    $ make install
+
+    Reboot and re-test rtai (Step 11) to make sure everything is fine.
+
+
+STEP 12 - Copy the rtai-lab folder into the current Matlab installation
+-----------------------------------------------------------------------
+
+    It is assumed that you have a working Matlab installation that includes 
+    simulink and Real Time Workshop (i currently use version 7.0.1). 
+    A few extra step are required if your matlab installation is not on 
+    the same system where you installed rtai. Typically people have Matlab 
+    installed under a Windows system. A Windows version of Matlab installed
+    under Wine, counts as an installation on a different system.
+
+    The thing to do at this point is to copy the entire content of the 
+    folder (typically) /usr/src/rtai-3.3/rtai-lab/matlab into Matlab_Root\rtw\c\rtai
+    (typically the Matlab_Root is something like C:\Matlab701 for 
+     Windows and /usr/local/matlab for Unix).
+
+
+STEP 13 - Run setup.m and create mex files
+------------------------------------------
+
+    After you copied the rtai-lab folder you should open matlab
+    and run the Setup.m file that is included in the rtai-lab folder.
+    This basically adds the new folder to the matlab path.
+
+    After you have run setup.m you should be able to access the
+    simulink library RTAI Devices from the Simulink browser.
+
+    Now you need to create mex (Matlab Executable) files for every 
+    s-function in Matlab_Root\rtw\c\rtai, since it will be needed later:
+    From the matlab window, go to Matlab_Root\rtw\c\rtai\devices,
+    make sure the mex support is working (mex -setup) and then
+    issue the following commands:
+
+    mex sfun_rtai_led.c
+    mex sfun_rtai_log.c
+    mex sfun_rtai_meter.c
+    mex sfun_rtai_scope.c
+    mex sfun_rtai_synchronoscope.c
+
+    mex sfun_comedi_dio_write.c
+    mex sfun_comedi_dio_read.c
+    mex sfun_comedi_data_write.c
+    mex sfun_comedi_data_read.c
+  
+    Note that in older rtai versions you have to modify 
+    several files at this point for things to work fine,
+    so, yet another reason to use rtai-3.2 or greater. 
+
+
+STEP 14 - Edit rtai.tmf
+-----------------------
+
+    If you are using a Matlab installation (for Unix) on the same Linux 
+    system in which you installed RTAI, then you can skip the following 
+    and jump to the next step, otherwise you have to modify the rtai.tmf file 
+    in the rtai-lab folder, specifically, you must modify the following lines :
+    
+    MATLAB_ROOT     = |>MATLAB_ROOT<|
+    ---------------------------------
+    Here you have to replace |>MATLAB_ROOT<| with the path of a Linux 
+    folder in which you will later copy some matlab related files. 
+    Typically you will replace |>MATLAB_ROOT<| with /usr/local/matlab,
+    and only later you will actually create the /usr/local/matlab folder
+    in the Linux_with_RTAI filesystem and copy stuff within it (Step 16).
+
+    COMPUTER        = |>COMPUTER<|
+    ------------------------------
+    Here you have to replace |>COMPUTER<| with GLNX86 
+    (assuming Linux is innstalled on a x86 architecture).
+
+    You also have to modify the entries LINUX_HOME, 
+    RTAIDIR and COMEDI_HOME, to make sure they refer 
+    to the paths where Linux, rtai, and comedi are installed,
+    (typically they are /usr/src/linux, /usr/realtime
+     and /usr/src/comedi respectively). 
+
+    Finally, into the "Rules" section delete the following lines:
+
+    |>START_EXPAND_RULES<|%.o : |>EXPAND_DIR_NAME<|/%.c
+          gcc -c $(CFLAGS) $<
+    
+    |>END_EXPAND_RULES<|
+
+    otherwise, later on, the generated make files (*.mk) 
+    will contain the (windows) relative paths of the custom 
+    s-functions used in the scheme, therefore causing the make
+    process to fail miserably.
+    
+
+STEP 15 - Generating code from a simple example
+-----------------------------------------------
+
+    Copy the file Matlab_Root\rtw\c\rtai\examples\test.mdl
+    somewhere else, for example in Matlab_Root\work,
+    then within matlab, move to that folder, 
+    open the file with simulink and run it. 
+    It should run without problems.
+
+    At this point you are ready to generate code from it.
+    Open the simulation menu, simulation parameters,
+    Real-Time Workshop, and make sure that the RTAI Target
+    is selected, (otherwise browse and select it).
+    Then click on Build, to generate code from the scheme.
+
+    At this point you should have the folder test_rtai 
+    under your working directory. This folder contains 
+    the code generated from the test simulink scheme.
+
+    If your simulink scheme uses some custom s-functions,
+    (which is not specifically the case of test.mdl but
+    it is indeed the normal case), then it is very important 
+    at this point to remember to copy the C code of every 
+    custom s-functions used in the scheme inside the
+    generated scheme_rtai folder.
+
+    Another important thing to remember about s-functions
+    is to always USE LOWERCASE characters in the file name,
+    this is because the file names of the s-functions
+    will be converted to lowercase within the make file (*.mk),
+    which does not make any difference under windows but
+    causes missing file errors under unix if the original
+    name contained uppercase characters.
+
+
+STEP 16 - Copy the extern, rtw, and Simulink folders to Linux
+-------------------------------------------------------------
+
+    If you are using a Matlab installation (for Unix) on the same Linux 
+    system in which you installed RTAI, then you can skip this step.
+
+    In your Linux filesystem, create a folder that 
+    corresponds to the entry MATLAB_ROOT in your rtai.tmf file, 
+    (typically /usr/local/matlab), then copy within it the three folders 
+    Matlab_Root\extern, Matlab_Root\rtw and Matlab_Root\Simulink 
+    from the current Matlab installation.
+
+    Make sure all the c files in the folder Matlab_Root\rtw\c\libsrc
+    have been transfered, since they all will be needed later,
+    and for mysterious reasons some of them have a tendency to get lost.    
+
+
+STEP 17 - Copy, compile and run the generated code
+--------------------------------------------------
+
+    Copy the test_rtai folder somewhere in the linux filesystem, 
+    (e.g. usr/local/src/tests/test_rtai) and then, 
+    from within the test_rtai folder, as root :
+
+    make -f test.mk
+
+    at this point, if the compilation proceeds without errors you 
+    should get the executable test in the parent folder, so move 
+    to the parent folder, insert the required modules:
+
+    sync
+    insmod /usr/realtime/modules/rtai_hal.ko
+    insmod /usr/realtime/modules/rtai_lxrt.ko
+    insmod /usr/realtime/modules/rtai_fifos.ko
+    insmod /usr/realtime/modules/rtai_sem.ko
+    insmod /usr/realtime/modules/rtai_mbx.ko
+    insmod /usr/realtime/modules/rtai_msg.ko
+    insmod /usr/realtime/modules/rtai_netrpc.ko ThisNode="127.0.0.1"
+    sync
+
+    at this point run the test:
+
+    ./test -v -f 5
+
+    the process should run for 5 seconds.
+    
+    Then to test also xrtailab:
+ 
+    ./test &
+
+    starts the process in wait mode,
+
+    /usr/realtime/bin/xrtailab &
+
+    starts the xrtailab window, from that window you can then
+    actually start the real time process, log the data, 
+    see the plots from the scopes in the simulink schemes as the
+    process runs, and then stop the process.
+
+
+
+
+               CREATION OF A MINIMAL STAND ALONE RTAI SYSTEM
+
+
+STEP 1 - Configure and compile a reduced version of your Kernel
+---------------------------------------------------------------
+
+    The first thing to do is to compile the kernel that fits the target system, 
+    as far as processor type, bus and peripherals are concerned. 
+    As root:
+    
+    $ cd /usr/src/linux
+    $ make config (or menuconfig or xconfig)
+   
+    Since this must be a reduced version of the kernel, i.e. the
+    final size should be less than 700K, you have to disable virtually
+    everything except the loadable module support, the IPIPE option, 
+    the ISA bus, and the IDE, floppy, ext2, and /proc support.
+
+    Also, at this point, if you are really working with a floppy disk,
+    and you need an unattended reboot, you should manually edit the file
+    /usr/src/linux/init/do_mounts.c, search for the "press ENTER" string
+    and, a few lines below, change the instruction 
+    sys_read(fd, &c, 1); with the instruction sys_read(fd, &c, 0);
+
+    Once you have done the above, you have to compile the kernel:
+
+    $ make clean && make 
+
+    copy the configuration file for future reference :
+
+    $ cp -f .config config-floppy-rtlx-yy.txt
+
+
+STEP 2 - Download, unpack and install Busybox
+---------------------------------------------
+
+    Go to http://busybox.net/downloads/ and look for the newest stable
+    version, (i use version 1.01).
+    
+    As root, download the busybox-x.xx.tar.bz2 file into /usr/src
+    ans unpack it using the following commands :
+    
+    $ cd /usr/src
+    $ tar --bzip2 -xvf busybox-x.xx.tar.bz2
+    
+    Set a symbolic link for later use:
+    
+    $ rm -f busybox    
+    $ ln -fs busybox-x.xx busybox
+    
+    then, configure and install busybox:
+    
+    $ cd /usr/src/busybox
+    $ make config (or make menuconfig)
+
+    In the Build Options, select "Build Busybox as a static binary".
+    Be sure to include at least the init, insmod, rmmod, and mount, 
+    in general, select to only what you need, if unsure, use the default option.
+
+    $ make dep && make busybox
+
+    finally, save the config file for future reference:
+
+    $ cp -f .config my-busybox-config-yy.txt
+
+
+STEP 3 - Download, unpack and install LILO
+---------------------------------------------
+
+    Go to http://freshmeat.net/projects/bin86/ and look for the 
+    latest version of the bin86 assembler and loader, (i use 0.16.17).
+       
+    As root, download the bin86-x.xx.xx.tar.gz file into /usr/src
+    ans unpack it using the following commands
+
+    $ cd /usr/src
+    $ tar -zxvf bin86-x.xx.xx.tar.gz
+
+    Then compile the bin86 assembler:
+
+    $ cd /usr/src/bin86-x.xx.xx
+    $ mkdir /usr/local/man/man1
+    $ make && make install
+
+    If everything goes fine, then it's time to download LILO:    
+    go to http://freshmeat.net/projects/lilo/ and look for the 
+    newest stable version of the lilo, (i use version 22.7.1).
+    
+    As root, download the lilo-xx.x.x.src.tar.gz file into /usr/src
+    ans unpack it using the following commands :
+    
+    $ cd /usr/src
+    $ tar -zxvf lilo-xx.x.x.src.tar.gz
+     
+    Set a symbolic link for later use:
+     
+    $ rm -f lilo
+    $ ln -fs lilo-xx.x.x lilo
+     
+    then, build lilo (you don't have to install it on the system as a 
+    boot loader, you just need to have the /usr/src/lilo/lilo binary)
+    
+    $ make
+
+    Then reboot and make sure everything is fine.
+
+
+STEP 4 - Prepare Floppy
+----------------------------------------------------------
+
+    In what follows, it is assumed that you want to create a 
+    stand alone RTAI system on a floppy. This is rarely useful, 
+    since you can't normally include anything else other than 
+    the bare essential, however, if you learn how to squeeze RTAI 
+    on a floppy then you can later put it wherever you want,
+    using exactly the same procedure with just a few changes. 
+    
+    Insert a floppy disk, then, as root, 
+    unmount the floppy :
+    
+    $ umount /dev/fd0
+    $ sync
+
+    zero out the content of the floppy block by block:
+    
+    $ dd if=/dev/zero of=/dev/fd0 bs=1k count=1440
+    
+    create an ext2 file system on the floppy:
+    
+    $ /sbin/mke2fs -F -m 0 /dev/fd0
+    
+    create a temporary folder a if it does not exist, 
+    and remove everything if it exists
+    
+    $ mkdir -p /mnt/a
+    $ rm -drf /mnt/a/*
+        
+    mount the floppy on /mnt/a :
+    
+    $ mount -t ext2 /dev/fd0 /mnt/a
+    $ sync
+
+
+STEP 5 - Populate the root
+--------------------------
+
+    Again as root, create the classic unix directories :
+    
+    $ cd /mnt/a
+    $ mkdir boot
+    $ mkdir initrd
+    $ mkdir dev
+    $ mkdir proc
+    $ mkdir etc
+    $ mkdir sbin
+    $ mkdir bin
+    $ mkdir lib
+    $ mkdir mnt
+    $ mkdir usr
+    $ mkdir tmp
+    
+    $ mkdir lib/modules
+    $ mkdir -p var/{log,run}
+    $ touch var/run/utmp
+    
+    $ sync
+
+
+STEP 6 - Populate /dev
+----------------------
+
+    $ cp -dpR /dev/fd[0-1] dev
+    $ cp -dpR /dev/hda[0-3] dev
+    $ cp -dpR /dev/tty[0-6] dev
+    $ cp -dpR /dev/ttyS[0-6] dev
+    $ cp -dpR /dev/ram[0-6] dev
+    $ cp -dpR /dev/console dev
+    $ cp -dpR /dev/zero dev
+    $ cp -dpR /dev/null dev
+    $ cp -dpR /dev/kmem dev
+    $ cp -dpR /dev/mem dev
+
+    $ mkdir dev/rtf
+    $ cp -dpR /dev/rtf/[0-9] dev/rtf
+    $ cp -dpR /dev/rtf[0-9] dev
+    $ cp -dpR /dev/rtai_shm dev
+    
+    $ sync
+
+
+STEP 7 - Create the configuration files and populate /etc
+---------------------------------------------------------
+
+    I suggest that you create the folder /etc/rtai-fd0
+    to store the configuration files for your system.
+
+    There are 2 very important configuration files that the 
+    system needs to find during the boot process, that is 
+    /etc/fstab and /etc/init.d/rcS :
+
+
+    /etc/fstab
+    ----------
+    
+    This is the file that tells the filesystems to mount 
+    and where they are located, usually just a few lines are required:
+
+    /dev/fd0       /           ext2    defaults   1 1
+    none           /proc       proc    defaults   0 0
+    
+    If the kernel does not support the /proc filesystem then 
+    just the first line is necessary.
+
+
+    /etc/init.d/rcS
+    ---------------
+    
+    This file (rcS stands for Run Commands Shell) contains 
+    command to be executed by the shell as soon as it starts. 
+    here is an example:
+
+    #!/bin/sh
+
+    /bin/mount -av
+    
+    sync
+    insmod /lib/modules/rtai_hal.ko
+    insmod /lib/modules/rtai_lxrt.ko
+    insmod /lib/modules/rtai_fifos.ko
+    insmod /lib/modules/rtai_sem.ko
+    insmod /lib/modules/rtai_mbx.ko
+    insmod /lib/modules/rtai_msg.ko
+    sync
+
+    # insert your calls here
+   
+    poweroff
+
+
+    The lilo configuration file it is not needed during the 
+    boot process but it is needed later to properly write the 
+    floppy boot sector:
+
+
+    lilo.conf
+    ---------
+
+    Here is an example of lilo.conf file for a stand alone 
+    system with both kernel and filesystem on the same floppy :
+
+    boot	=/dev/fd0
+    map	        =/boot/map
+    timeout	=00
+    read-write
+    backup	=/dev/null
+    compact
+    image	=/boot/bzImage
+    label	=RTFly
+    root	=/dev/fd0
+    
+    It is important to store also the configuration files
+    for both the kernel and busybox:
+
+    $ cp -f /usr/src/linux/.config /etc/rtai-fd0/config-linux.txt
+    $ cp -f /usr/src/busybox/.config /etc/rtai-fd0/config-busybox.txt
+
+    At this point we can move the files into the mnt/a/etc folder:
+
+    $ cd /mnt/a
+    $ cp /etc/rtai-fd0/* etc
+
+    It is always better to make sure that rc is executable:
+
+    $ chmod -R 777 etc/*
+    $ sync
+
+    Finally, if you modified the code of either the linux kernel
+    or busybox, it is a good idea to include it here in this folder. 
+
+
+STEP 8 - Populate /bin /sbin and /usr using busybox
+---------------------------------------------------
+
+    As root, do the following :
+    
+    $ cd /usr/src/busybox
+    $ make PREFIX=/mnt/a install
+    $ sync
+
+
+STEP 9 - Copy the kernel and make the disk bootable
+---------------------------------------------------
+
+    The kernel image has to be compiled for the target processor.
+
+    $ cp /usr/src/linux/arch/i386/boot/bzImage /mnt/a/boot/bzImage
+    $ sync
+    
+    $ /usr/src/lilo/lilo -v -C /etc/lilo.conf -r /mnt/a
+    $ sync 
+
+
+STEP 10 - Copy rtai related stuff
+--------------------------------
+
+    If you are really working with a standard floppy disk then
+    at this point there will probably be only about 50K left 
+    on your floppy disk so, there will be no space left to 
+    copy any modules or executables, except maybe for a few ones,
+    so, in that case you can skip this step.
+
+    All the rtai modules and the executables that need to run 
+    on the target system, have to be compiled for the target system,
+    therefore make sure that rtai has been compiled and installed
+    using the same linux .config file that was used to compile the
+    kernel for the target processor in step 1. 
+    If you are not sure, then, as root :
+
+    $ cd /usr/src/rtai
+    $ make clean && make && make install
+
+    Then,
+
+    $ cd /mnt/a
+    $ cp /usr/realtime/modules/rtai_hal.ko lib/modules
+    $ cp /usr/realtime/modules/rtai_lxrt.ko lib/modules
+    $ cp /usr/realtime/modules/rtai_fifos.ko lib/modules
+    $ cp /usr/realtime/modules/rtai_sem.ko lib/modules
+    $ cp /usr/realtime/modules/rtai_mbx.ko lib/modules
+    $ cp /usr/realtime/modules/rtai_msg.ko lib/modules
+    $ sync
+
+    Also, allow the tmp directory to be accessible,
+    if you want to copy some file over there.
+
+    chmod -R 777 /mnt/flash/tmp
+
+    At this point, you should recompile the executables
+    that need to run on the target system, and copy them
+    on the tmp directory along with any other needed file.
+    
+
+STEP 11 - Check size, unmount and reboot
+----------------------------------------
+
+    $ df -h /dev/fd0
+    $ sync
+    $ sync   
+    $ umount /dev/fd0
+    
+    now take your device, insert it into the target system, 
+    reboot and cross your fingers really hard :-)
+
+

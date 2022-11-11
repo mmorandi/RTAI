@@ -1,0 +1,367 @@
+========================================================================
+RTAI & Comedi & ScicosLab & QRtaiLab on Kubuntu Jaunty - 2009-06-15 - V2
+By Guillaume Millet  (guimillet at users dot sourceforge dot net)
+Modified version of Arno Stienen's guide  (arnoreg at gmail dot com)
+========================================================================
+
+==============
+* Introduction
+==============
+
+This guide will compile and install all the packages needed to use RTAI with
+Comedi, ScicosLab and QRtaiLab on an Kubuntu Jaunty machine. Always check if
+newer versions can be found on their websites, and adjust commands as required.
+
+Listings, downloadings, extractions, renamings and linkings are given as command
+lines but all these actions can be done graphically.
+
+The guide uses the checkinstall program to create installable packages. Each
+time, customize your package to your liking, but as a general rule, you should
+use these values:
+
+0. Maintainer   Your Name (youremail@address.com)
+1. Summary      Use a short description as found in the source, on the
+                website, or how you best remember it.
+2. Name         In this guide, resp. comedilib, comedi-calibrate, comedi, rtai.
+3. Version      Either the version number ('3.7.1') or the cvs
+                download date ('cvs20090501').
+
+==============
+* Preparations
+==============
+
+Add your account in the src group (replace [yourusername] with
+your own user name):
+
+       sudo usermod -a -G src [yourusername]
+
+Change the group of /usr/local/src with src and allow writing for this group:
+
+       sudo chown root:src /usr/local/src
+       sudo chmod g+w /usr/local/src
+
+Install the required packages :
+
+       sudo aptitude install build-essential automake checkinstall fakeroot kernel-package libtool flex bison libboost-program-options-dev libgsl0-dev libgtk2.0-dev libgail18 gfortran libqwt5-qt4-dev
+
+This list is for a default Kubuntu 9.04 system. These packages will also install
+automatically the following packages (among other things):
+
+General:
+ build-essential       --> dpkg-dev g++ g++-4.3 libstdc++6-4.3-dev patch
+ automake              --> autoconf autotools-dev m4
+ checkinstall
+Linux Kernel:
+ fakeroot
+ kernel-package        --> intltool-debian po-debconf
+Comedilib:
+ libtool
+ flex
+ bison
+Comedi Calibrate:
+ libboost-program-options-dev  --> libboost-dev libboost-program-options1.34.1
+ libgsl0-dev
+RTAI add-ons in ScicosLab:
+ libgtk2.0-dev libgail18 gfortran
+QRtaiLab:
+ libqwt5-qt4-dev
+
+===============
+* Download RTAI
+===============
+
+Download, extract and link RTAI in /usr/local/src from either:
+
+ - the stable release (check for the latest in https://www.rtai.org/RTAI):
+      cd /usr/local/src
+      wget --no-check-certificate -P /tmp https://www.rtai.org/RTAI/rtai-3.7.1.tar.bz2
+      tar xjf /tmp/rtai-3.7.1.tar.bz2
+      ln -s rtai-3.7.1 rtai
+
+ - or the development version (requires cvs package):
+      cd /usr/local/src
+      cvs -d:pserver:anonymous@cvs.gna.org:/cvs/rtai co magma
+      mv magma rtai-3.7.1-magma_date # adapt with your download date
+      ln -s rtai-3.7.1-magma_date rtai
+
+========================
+* Patch Linux Kernel 2.6
+========================
+
+Check the kernel version numbers of available RTAI patches:
+
+      ls /usr/local/src/rtai/base/arch/x86/patches/
+
+and look for the kernel version numbers in hal-linux-[kernel-version].patch.
+Kernel versions under 2.6.23 are in usr/local/src/rtai/base/arch/i386/patches/.
+
+Download one of these kernels from http://www.kernel.org. You should get a 2.6.x
+version of the kernel, but a more recent 2.6.x.y version may work too.
+
+      wget -P /tmp http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.29.4.tar.bz2
+
+You can also try to use the Ubuntu kernel source, but "there could be
+conflicting, additional kernel-patches done by the Ubuntu packagers which are
+not part of the default kernel source. If it worked (i.e., if the RT patch
+patched without problems), you're probably fine." [Arno Stienen]. The Ubuntu
+kernel source metapackage is named linux-source, which installs the latest
+kernel source with Ubuntu patches (/usr/src/linux-source-2.6.28.tar.bz2).
+
+Extract the source in /usr/src, rename and create a link named "linux" to it:
+
+      cd /usr/src
+      tar xjf /tmp/linux-2.6.29.4.tar.bz2
+      mv linux-2.6.29.4 linux-2.6.29.4-rtai
+      ln -s linux-2.6.29.4-rtai linux
+
+Patch the kernel with a patch with the same 2.6.x number:
+
+      cd /usr/src/linux
+      patch -p1 < /usr/local/src/rtai/base/arch/x86/patches/hal-linux-2.6.29.4-x86-2.4-01.patch
+
+If you use the 2.6.x kernel, the patch should work perfectly. For a 2.6.x.y
+kernel, you may get some Hunk-succeeded messages (which are okay), but if you
+get real errors, redo the process with a 2.6.x (no .y) kernel.
+
+Copy the original Ubuntu kernel configurations:
+
+      cp /boot/config-`uname -r` .config
+
+Change some configurations; Three configuration interfaces are available, choose
+one of them: menuconfig (ncurses gui, requires libncurses5-dev) or xconfig (Qt3
+gui, requires libqt3-mt-dev) or gconfig (GTK gui, requires libgtk2.0-dev
+libglib2.0-dev libglade2-dev):
+
+      make menuconfig or xconfig or gconfig
+
+Load the configuration file that we saved as .config. Then configure the kernel
+with these settings:
+- Enable loadable module support ---> Module versioning support ---> disabled
+- Processor type and features
+   ---> Preemption Model ---> Preemptible Kernel (Low-Latency Desktop)
+   ---> Interrupt pipeline ---> enabled
+   ---> Timer frequency ---> 1000 Hz
+- Power management and ACPI options
+   ---> CPU Frequency scaling ---> CPU Frequency scaling ---> disabled
+   ---> APM (Advanced Power Management) BIOS support ---> disabled
+
+For non-SMP systems (for instance, single processor P3 or P4 machines
+(UPC - UniProcessor)), disable symmetric multi-processing support:
+- Processor type and features
+   ---> Symmetric multi-processing support ---> disabled
+
+Choose the exact processor flavour for your machine. For example, for
+a Core2Duo processor:
+- Processor type and features ---> Processor family ---> Core 2/Newer Xeon
+
+Create and install Ubuntu kernel package (kernel_source can also be added
+to the same make-kpkg line, but are not needed), replace -rtai37-core2 by
+adequate information:
+
+       sudo make-kpkg clean
+       make-kpkg --rootcmd fakeroot --append-to-version -rtai37-core2 --revision r1 --initrd kernel_image kernel_headers
+       sudo dpkg -i ../linux-headers-2.6.29.4-rtai37-core2_r1_i386.deb ../linux-image-2.6.29.4-rtai37-core2_r1_i386.deb
+
+Reboot on your new RT kernel.
+
+======
+* RTAI
+======
+
+Compile and install RTAI (for now without Comedi support):
+
+       cd /usr/local/src/rtai
+       make menuconfig (or xconfig or gconfig)
+
+Configure, optionally adjusting:
+- Menu Machine (x86): adjust Number of CPUs (default = 2)
+
+       make
+       sudo make install
+
+Add ':/usr/realtime/bin' to the path variable in '/etc/environment':
+
+       sudo sed -i 's/\(PATH=\"\)/\1\/usr\/realtime\/bin:/' /etc/environment
+
+===========
+* Comedilib
+===========
+
+Download Comedi source on http://www.comedi.org/download.html and extract it in
+/usr/local/src:
+
+      cd /usr/local/src
+      wget -O /tmp/comedi.tar.gz http://www.comedi.org/cgi-bin/viewcvs.cgi/comedi.tar.gz?view=tar
+      wget -O /tmp/comedilib.tar.gz http://www.comedi.org/cgi-bin/viewcvs.cgi/comedilib.tar.gz?view=tar
+      wget -O /tmp/comedi_calibrate.tar.gz http://www.comedi.org/cgi-bin/viewcvs.cgi/comedi_calibrate.tar.gz?view=tar
+      tar xzf /tmp/comedi.tar.gz
+      tar xzf /tmp/comedilib.tar.gz
+      tar xzf /tmp/comedi_calibrate.tar.gz
+
+Compile and install comedilib:
+
+       cd comedilib
+       sh autogen.sh
+       ./configure --with-udev-hotplug=/lib --sysconfdir=/etc
+       make
+       sudo checkinstall # Use 'comedilib' as name; edit summary and group values to remove the second line (bug); for other values, see introduction.
+
+Compile and install comedi_calibrate:
+
+       cd ../comedi_calibrate
+       autoreconf -i
+       ./configure
+       make
+       sudo checkinstall # Use 'comedi-calibrate' as name; for other values, see introduction.
+       mkdir -p /usr/local/var/lib/comedi/calibrations/
+
+To calibrate your card, use comedi_calibrate, or comedi_soft_calibrate if you
+have a M-series NI card.
+
+========
+* Comedi
+========
+
+       cd ../comedi
+       sh autogen.sh
+       ./configure # you can add --disable-pcmcia if you don't need pcmcia
+       make
+
+Create install script:
+
+       nano install-rtai
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+#!/bin/bash
+make install
+mkdir -p /usr/local/include/linux
+cp include/linux/comedi.h include/linux/comedilib.h /usr/local/include/linux
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+       sudo checkinstall --fstrans=no bash install-rtai # Use 'comedi' as name; for other values, see introduction.
+
+===============
+* RTAI + Comedi
+===============
+
+       cd /usr/local/src/rtai
+       make menuconfig (or xconfig or gconfig)
+
+Configure RTAI with COMEDI:
+- Menu Add-ons: Select Real Time COMEDI support in user space
+
+       make
+       sudo checkinstall --fstrans=no # Use 'rtai' as name; for other values, see introduction.
+
+==============================
+* ScicosLab + RTAI-Lab add-ons
+==============================
+
+Download and install ScicosLab from its website:
+
+      wget -P /tmp http://cermics.enpc.fr/~jpc/scilab-gtk-tiddly/files/scicoslab-gtk_4.3-3_i386.jaunty.deb
+      sudo dpkg -i /tmp/scicoslab-gtk_4.3-3_i386.jaunty.deb
+
+Install RTAI-Lab add-ons as root and as user:
+
+      cd /usr/local/src/rtai/rtai-lab/scilab/
+      sudo make install # to install rtmain.c in /usr/realtime/share/rtai/scicos
+      cd ../scicoslab/macros
+      sudo su -c "make install"
+      make user
+
+==========
+* QRtaiLab
+==========
+
+Download QRtaiLab source on http://qrtailab.sourceforge.net and extract it in
+/usr/local/src:
+
+      cd /usr/local/src
+      wget -P /tmp http://downloads.sourceforge.net/qrtailab/QRtaiLab-0.1.7.tar.gz
+      tar xzf /tmp/QRtaiLab-0.1.7.tar.gz
+
+Modify qrtailab.config as follows (to use the Ubuntu version of libqwt5):
+      INCLUDEPATH += . /usr/realtime/include /usr/include/qwt-qt4
+      LIBS += -lqwt-qt4
+
+Make and install:
+      cd qrtailab-0.1.7
+      qmake-qt4
+      make
+      sudo cp qrtailab /usr/local/bin
+
+===================
+* Post Installation
+===================
+
+Copy the following lines in a rlinsmod script that you can use to quickly load
+RTAI-Lab and Comedi modules in kernel and configures the drivers.
+
+       sudo nano /usr/realtime/bin/rlinsmod
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+# RLINSMOD - RTAI-Lab Insmod.
+# Inserts RTAI-Lab and Comedi modules in kernel and configures the drivers.
+
+insmod /usr/realtime/modules/rtai_smi.ko # only if you have an INTEL chipset
+insmod /usr/realtime/modules/rtai_hal.ko
+insmod /usr/realtime/modules/rtai_lxrt.ko
+insmod /usr/realtime/modules/rtai_fifos.ko
+insmod /usr/realtime/modules/rtai_sem.ko
+insmod /usr/realtime/modules/rtai_mbx.ko
+insmod /usr/realtime/modules/rtai_msg.ko
+insmod /usr/realtime/modules/rtai_netrpc.ko
+insmod /usr/realtime/modules/rtai_shm.ko
+modprobe kcomedilib
+insmod /usr/realtime/modules/rtai_comedi.ko
+
+# modprobe -r uhci-hcd # trick to avoid shared interrupts with uhci_hcd devices
+# Hardware dependent lines below. This example is for a NI PCI 6221 DAQ Card.
+modprobe ni_pcimio
+# modprobe uhci-hcd # for the trick to avoid shared interrupts
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+Copy the following lines in a rlrmmod script that you can use to quickly remove
+RTAI-Lab and Comedi modules from kernel.
+
+       sudo nano /usr/realtime/bin/rlrmmod
+
+==== START COPY FROM LINE BELOW ==== (Do not include this line!)
+# RLRMMOD - RTAI-Lab Rmmod.
+# Removes RTAI-Lab and Comedi modules from kernel.
+
+modprobe -r ni_pcimio
+  
+rmmod rtai_comedi
+modprobe -r kcomedilib
+rmmod rtai_shm
+rmmod rtai_netrpc
+rmmod rtai_msg
+rmmod rtai_mbx
+rmmod rtai_sem
+rmmod rtai_fifos
+rmmod rtai_lxrt
+rmmod rtai_hal
+rmmod rtai_smi
+==== STOP COPY AT LINE ABOVE ==== (Do not include this line!)
+
+Allow the scripts to be executed:
+       sudo chmod +x /usr/realtime/bin/rlrmmod
+       sudo chmod +x /usr/realtime/bin/rlinsmod
+
+If you want to start rlinsmod after every boot (check first that rlinsmod does
+not freeze your computer...), add the line '/usr/realtime/bin/rlinsmod'
+(without the quotes) to your rc.local file. Place this line above 'exit 0'.
+
+       sudo nano /etc/rc.local
+
+======
+* Done
+======
+
+Read the RTAI-Lab tutorial for more information. In particular, you can find
+a description of the RTAI-Lib palette, a guide to make a real-time sinewave, and
+a few examples showing how to use FIFOS and semaphores and how to convert a
+continuous-time plant in a discrete-time model.
+The tutorial is in the RTAI-Lab repository, https://www.rtai.org/RTAILAB.
