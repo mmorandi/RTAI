@@ -21,7 +21,7 @@ See also:
     [[PDF]](userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.pdf), [[Tar archive with files]](userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.tgz)
 - Instructions to port Matlab/Simulink diagrams to RTAI:
     [RTAI-TARGET-HOWTO](userfiles/downloads/RTAILAB/RTAI-TARGET-HOWTO.txt)
-    [RTAI-Lab repository](userfiles/downloads/RTAILAB)
+    [RTAI-Lab repository](https://github.com/mmorandi/RTAI/tree/main/userfiles/downloads/RTAILAB)
 
 ![RTAI-Lab in action](userfiles/images/coverfigsmall4.gif)
 

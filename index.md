@@ -37,10 +37,10 @@ Two development branches are available:
   - magma : this branch can be in an unstable state, but it should be possible to use it as well
 
 # Downloads
-- [RTAI repository](userfiles/downloads/RTAI)
+- [RTAI repository](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAI)
 - [RTAI latest release](userfiles/downloads/RTAI/rtai-5.3.tar.bz2)
-- [RTAI-Lab repository](userfiles/downloads/RTAILAB)
-- [RTAI Users contributions](userfiles/downloads/RTAICONTRIB)
+- [RTAI-Lab repository](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB)
+- [RTAI Users contributions](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAICONTRIB)
 
 # RTAI Mailing Lists
 - [Search / View Archives](https://mail.rtai.org/pipermail/rtai/?&MMN_position=21:21)
