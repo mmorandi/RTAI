@@ -1,3 +1,16 @@
+# RTAI and the RT-Linux patent
+
+***
+
+[Homepage](index.html) &nbsp;
+    [About RTAI](About-RTAI) &nbsp;
+    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
+    [Documentation](Documentation) &nbsp;
+    [RTAI Team](RTAI-Team) &nbsp;
+    [Announcements](Announcements)
+
+***
+
 The following statement by Eben Moglen, General Counsel of the [Free Software Foundation](http://www.fsf.org/) clearifies the legal situation of RTAI users with regard to the infamous [RT-Linux Patent](http://www.delphion.com/details?pn=US05995745__).
 ```
 Date:    Sat, 20 Oct 2001 11:27:14 -0400 (EDT)

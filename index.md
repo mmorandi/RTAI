@@ -9,7 +9,7 @@
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
-    [Archive announcements](Archive-announcements)
+    [Announcements](Announcements)
 
 ***
 

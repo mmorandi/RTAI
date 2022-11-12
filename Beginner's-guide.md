@@ -1,3 +1,16 @@
+# Beginner's guide
+
+***
+
+[Homepage](index.html) &nbsp;
+    [About RTAI](About-RTAI) &nbsp;
+    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
+    [Documentation](Documentation) &nbsp;
+    [RTAI Team](RTAI-Team) &nbsp;
+    [Announcements](Announcements)
+
+***
+
 # What is a "real time system"?
 
 A real time system can be defined as a "system capable of guaranteeing timing requirements of the processes under its control".

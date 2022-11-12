@@ -7,10 +7,9 @@
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
-    [Archive announcements](Archive-announcements)
+    [Announcements](Announcements)
 
 ***
-
 
 In this section you'll find all the documents related to RTAI development and its applications, allowable for reading and downloads on this website.
 

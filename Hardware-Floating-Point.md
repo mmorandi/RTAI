@@ -1,3 +1,16 @@
+# Hardware Floating-point
+
+***
+
+[Homepage](index.html) &nbsp;
+    [About RTAI](About-RTAI) &nbsp;
+    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
+    [Documentation](Documentation) &nbsp;
+    [RTAI Team](RTAI-Team) &nbsp;
+    [Announcements](Announcements)
+
+***
+
 In control applications, using a PC and Linux, there are many cases in which it can be useful to use floating point operations in interrupts handlers. Instances of such cases are a few digital controls, even complex ones, that requires a periodic timing with some form of communication with front end supervisory Linux processes.
 
 In such a situation one can save the overhead of using a hard real time scheduler, e.g. those made available by RTAI or NMT-RTL (http://www.rtlinux.org/), and do all what is needed from an interrupt handler, timed by an external source or, as shown in examples available in the RTAI distribution, by the PC 8254 timer, or local APIC timers when available.
