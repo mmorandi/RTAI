@@ -1,5 +1,5 @@
 # RTAI
-This repository is meant to replace the old RTAI website with github's wiki, see https://github.com/mmorandi/RTAI/wiki.
+This repository is meant to replace the old RTAI website with github's pages, see https://mmorandi.github.io/RTAI/.
 
 The RTAI source code is hosted on savannah: https://savannah.nongnu.org/projects/rtai,
 
