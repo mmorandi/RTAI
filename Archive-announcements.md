@@ -12,7 +12,8 @@
 ***
 
 - May 19, 2021: **RTAI 5.3 released**
-  The tarball is available at [rtai-5.3.tar.bz2](userfiles/downloads/RTAI/rtai-5.3.tar.bz2)<p> Supports up to Linux 4.19.
+  The tarball is available at [rtai-5.3.tar.bz2](userfiles/downloads/RTAI/rtai-5.3.tar.bz2)
+  Supports up to Linux 4.19.
     * For what changed/new see the Changelog.
     * Enjoy!
     * sha512sum:
@@ -35,4 +36,4 @@ b17d58f1b80b6ec1595b7d2827920a3cc5f4baaa6056b833b195350ff24a041776a355472f3130eb
     * Support of scattered Linux versions from 3.10 to 4.4; 
     * for the whens and whats see the Changelog.
 
-- Older announcements were lost moving from the previous CMS to github's wiki pages
+- Older announcements were lost moving from the previous CMS to github's pages
