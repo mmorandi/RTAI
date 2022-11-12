@@ -1,6 +1,6 @@
 # RTAI - Real Time Application Interface Official Website ![RTAI logo](https://github.com/mmorandi/RTAI/blob/main/logo_rtai_small.jpg)
 ***
-[Homepage](Home) &nbsp;
+[Homepage]() &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;

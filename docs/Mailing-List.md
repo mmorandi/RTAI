@@ -1,6 +1,6 @@
 # RTAI - Real Time Application Interface Official Website
 ***
-[Homepage](Home) &nbsp;
+[Homepage]() &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;

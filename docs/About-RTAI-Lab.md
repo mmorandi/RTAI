@@ -1,10 +1,10 @@
 ***
-[Homepage](https://github.com/mmorandi/RTAI/wiki/Home) &nbsp;
-    [About RTAI](https://github.com/mmorandi/RTAI/wiki/About-RTAI) &nbsp;
-    [About RTAI-Lab](https://github.com/mmorandi/RTAI/wiki/About-RTAI-Lab) &nbsp;
-    [Documentation](https://github.com/mmorandi/RTAI/wiki/Documentation) &nbsp;
-    [RTAI Team](https://github.com/mmorandi/RTAI/wiki/RTAI-Team) &nbsp;
-    [Archive announcements](https://github.com/mmorandi/RTAI/wiki/Archive-announcements)
+[Homepage]() &nbsp;
+    [About RTAI](About-RTAI) &nbsp;
+    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
+    [Documentation](Documentation) &nbsp;
+    [RTAI Team](RTAI-Team) &nbsp;
+    [Archive announcements](Archive-announcements)
 ***
 
 The RTAI-Lab project provides a tool chain to develop block diagrams that can be compiled and executed on the [RTAI](http://www.rtai.org/) real-time Linux operating system. RTAI-Lab is included in the RTAI distribution.
