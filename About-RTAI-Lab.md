@@ -14,16 +14,16 @@ Block diagrams can be developed using either [Scilab](http://www.scilab.org/)/[S
 See also:
 
 - RTAI-Lab tutorial for Scilab/Scicos and Linux
-    [[PDF]](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.pdf), [[Tar archive with files]](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.tgz)
+    [[PDF]](userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.pdf), [[Tar archive with files]](userfiles/downloads/RTAILAB/RTAI-Lab-tutorial.tgz)
 - Instructions to port Matlab/Simulink diagrams to RTAI:
-    [RTAI-TARGET-HOWTO](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB/RTAI-TARGET-HOWTO.txt)
-    [RTAI-Lab repository](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB)
+    [RTAI-TARGET-HOWTO](userfiles/downloads/RTAILAB/RTAI-TARGET-HOWTO.txt)
+    [RTAI-Lab repository](userfiles/downloads/RTAILAB)
 
-![RTAI-Lab in action](https://www.rtai.org/userfiles/images/coverfigsmall4.gif)
+![RTAI-Lab in action](userfiles/images/coverfigsmall4.gif)
 
 ### RTAI-Lab main features
 
-- Adds [RTAI-Lib palette](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB/RTAILibPaletteKDE.gif) of RTAI blocks to [Scicos](http://www.scicos.org/) to develop real-time block diagrams
+- Adds [RTAI-Lib palette](userfiles/downloads/RTAILAB/RTAILibPaletteKDE.gif) of RTAI blocks to [Scicos](http://www.scicos.org/) to develop real-time block diagrams
 - Enables host and target systems to communicate via net_rpc
 - xrtailab virtual oscilloscope and monitoring application lets you interact with the real-time executable
 - Automatic real-time code generation from Scilab/Scicos
