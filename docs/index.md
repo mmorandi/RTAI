@@ -1,11 +1,16 @@
-# RTAI - Real Time Application Interface Official Website ![RTAI logo](https://github.com/mmorandi/RTAI/blob/main/logo_rtai_small.jpg)
+# RTAI - Real Time Application Interface Official Website 
+
+![RTAI logo](https://github.com/mmorandi/RTAI/blob/main/logo_rtai_small.jpg)
+
 ***
+
 [Homepage]() &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
     [Archive announcements](Archive-announcements)
+
 ***
 
 This is the homepage of **RTAI** - the **RealTime Application Interface** for **Linux** - which lets you write applications with strict timing constraints for your favorite operating system. Like Linux itself, this software is a community effort. If you are interested in what it does, just join our mailing list and help our team!
