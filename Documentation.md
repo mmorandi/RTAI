@@ -1,10 +1,14 @@
+# Documentation
+
 ***
-[Homepage]() &nbsp;
+
+[Homepage](index.html) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
     [Archive announcements](Archive-announcements)
+
 ***
 
 

@@ -1,10 +1,14 @@
+# Announcements
+
 ***
-[Homepage]() &nbsp;
+
+[Homepage](index.html) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
     [Archive announcements](Archive-announcements)
+
 ***
 
 - May 19, 2021: **RTAI 5.3 released**<p> The tarball is available at [rtai-5.3.tar.bz2](userfiles/downloads/RTAI/rtai-5.3.tar.bz2)<p> Supports up to Linux 4.19.

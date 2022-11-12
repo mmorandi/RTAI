@@ -1,10 +1,14 @@
+# About RTAI-Lab
+
 ***
-[Homepage]() &nbsp;
+
+[Homepage](index.html) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
     [RTAI Team](RTAI-Team) &nbsp;
     [Archive announcements](Archive-announcements)
+
 ***
 
 The RTAI-Lab project provides a tool chain to develop block diagrams that can be compiled and executed on the [RTAI](http://www.rtai.org/) real-time Linux operating system. RTAI-Lab is included in the RTAI distribution.
