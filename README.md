@@ -3,4 +3,4 @@ This repository is meant to replace the old RTAI website with github's wiki, see
 
 The RTAI source code is hosted on savannah: https://savannah.nongnu.org/projects/rtai,
 
-see also https://github.com/mmorandi/RTAI/wiki#svn.
+see also https://mmorandi.github.io/RTAI/index.html#svn.
