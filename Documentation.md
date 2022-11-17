@@ -1,8 +1,11 @@
+---
+---
+
 # Documentation
 
 ***
 
-[Homepage](index.html) &nbsp;
+[Homepage](index) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
@@ -11,9 +14,9 @@
 
 ***
 
-In this section you'll find all the documents related to RTAI development and its applications, allowable for reading and downloads on this website.
+In this section you'll find all the documents related to **RTAI** development and its applications, allowable for reading and downloads on this website.
 
-We invite all users to contribute sending documents related to their specific applications of RTAI or, or preparing by theirself specific documents in support to the RTAI project.
+We invite all users to contribute sending documents related to their specific applications of **RTAI** or, or preparing by theirself specific documents in support to the **RTAI** project.
 In few days it will be possible to submit these contributions documents directly to this website, for now please send your already prepared documents, if any, to the webmaster.
 
 Thanks a lot for your support!!!
@@ -22,10 +25,10 @@ Thanks a lot for your support!!!
 
 Name | Updated | Description
 -- | -- | --
-[Hardware Floating Point](Hardware-Floating-Point) | 01/23/2006 | Hardware Floating Point Support in Interrupt Handlers.
-[RTAI and the RT-Linux patent](RTAI-and-the-RT-Linux-patent) | 01/31/2006 | RTAI and the RT-Linux patent, by E. Moglen, October 2001.
+[Hardware Floating Point](Hardware-Floating-Point.html) | 01/23/2006 | Hardware Floating Point Support in Interrupt Handlers.
+[RTAI and the RT-Linux patent](RTAI-and-the-RT-Linux-patent.html) | 01/31/2006 | RTAI and the RT-Linux patent, by E. Moglen, October 2001.
 [RTAI History](userfiles/documentation/documents/history.pdf) | 01/18/2006 | On these slides you can learn more about the history of RTAI (or download the PDF version)
-[RTAI: a Beginner's Guide](Beginner's-guide) | 01/24/2006 | A comprehensive introduction to the Realtime Application Interface.
+[RTAI: a Beginner's Guide](Beginner's-guide.html) | 01/24/2006 | A comprehensive introduction to the Realtime Application Interface.
 
 
 

@@ -1,8 +1,11 @@
+---
+---
+
 # RTAI team
 
 ***
 
-[Homepage](index.html) &nbsp;
+[Homepage](index) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;

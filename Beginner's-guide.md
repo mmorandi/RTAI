@@ -1,8 +1,11 @@
+---
+---
+
 # Beginner's guide
 
 ***
 
-[Homepage](index.html) &nbsp;
+[Homepage](index) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
@@ -30,7 +33,7 @@ Typically real time tasks have the following types of requirements and/or constr
 
 # What is RTAI?
 
-RTAI means Real Time Application Interface. Strictly speaking, it is not a real time operating system, such as VXworks or QNX. It is based on the Linux kernel, providing the ability to make it fully pre-emptable.
+**RTAI** means Real Time Application Interface. Strictly speaking, it is not a real time operating system, such as VXworks or QNX. It is based on the Linux kernel, providing the ability to make it fully pre-emptable.
 
 Linux is a standard time-sharing operating system which provides good average performance and highly sophisticated services. Like other OS, it offers to the applications at least the following services:
 	
@@ -40,15 +43,15 @@ Linux is a standard time-sharing operating system which provides good average pe
 
 Linux suffers from a lack of real time support. To obtain a timing correctness behaviour, it is necessary to make some changes in the kernel sources, i.e. in the interrupt handling and scheduling policies. In this way, you can have a real time platform, with low latency and high predicatbility requirements, within full non real time Linux environment (access to TCP/IP, graphical display and windowing systems, file and data base systems, etc.).
 
-RTAI offers the same services of the Linux kernel core, adding the features of an industrial real time operating system. It consists basically of an interrupt dispatcher: RTAI mainly traps the peripherals interrupts and if necessary re-routes them to Linux. It is not an intrusive modification of the kernel; it uses the concept of HAL (hardware abstraction layer) to get information from Linux and to trap some fundamental functions. This HAL provides few dependencies to Linux Kernel. This leads to a simple adaptation in the Linux kernel, an easy RTAI port from version to version of Linux and an easier use of other operating systems instead of RTAI. RTAI considers Linux as a background task running when no real time activity occurs.
+**RTAI** offers the same services of the Linux kernel core, adding the features of an industrial real time operating system. It consists basically of an interrupt dispatcher: **RTAI** mainly traps the peripherals interrupts and if necessary re-routes them to Linux. It is not an intrusive modification of the kernel; it uses the concept of HAL (hardware abstraction layer) to get information from Linux and to trap some fundamental functions. This HAL provides few dependencies to Linux Kernel. This leads to a simple adaptation in the Linux kernel, an easy **RTAI** port from version to version of Linux and an easier use of other operating systems instead of **RTAI**. **RTAI** considers Linux as a background task running when no real time activity occurs.
 
 ## Installing RTAI
 
-Please have a look at the README.INSTALL file in the RTAI distribution for detailed instructions how to install RTAI.
+Please have a look at the **README.INSTALL** file in the **RTAI** distribution for detailed instructions how to install **RTAI**.
 Kernel Modules
 
 ## Kernel Modules
-RTAI is very much module oriented. So to understand and be able to use RTAI is necessary to know the dynamically loadable modules for Linux.
+**RTAI** is very much module oriented. So to understand and be able to use **RTAI** is necessary to know the dynamically loadable modules for Linux.
 
 The Linux kernel design is similar to that of classic Unix systems: it uses a monolithic architecture with file systems, device drivers, and other pieces statically linked into the kernel image to be used at boot time. The use of dynamic kernel modules allows you to write portions of the kernel as separate objects that can be loaded and unloaded on a running system.
 
@@ -166,7 +169,7 @@ void cleanup_module(void)
 
 ## RTAI Modules.
 
-To use RTAI, you have to load the modules that implement whatever RTAI capabilities you need. According to 1.3 release, available are the following core modules:
+To use **RTAI**, you have to load the modules that implement whatever **RTAI** capabilities you need. According to 1.3 release, available are the following core modules:
 
 	- rtai
 	- rtai_sched
@@ -188,7 +191,7 @@ Let's examine one by one.
      it is not required anymore, by calling `rt_umount_rtai()`, which put rtai back into its 
      bed to sleep. The mount call activates rtai and, even if you do not use any of its services Linux 
      work toward the hardware is filtered by rtai. The most important thing happening when you 
-     mount RTAI is that from that very instant Linux is no more in power of disabling/enabling 
+     mount **RTAI** is that from that very instant Linux is no more in power of disabling/enabling 
      interrupts. From that point on rtai will assure that interrupt enables/disables will be consistent 
      intra Linux but Linux could be preempted at any time by the higher authority of rtai, the only 
      master of the hardware.
@@ -196,10 +199,10 @@ Let's examine one by one.
 2) The real time scheduler module, which is in charge of distributing the CPU to different tasks 
      present in the system, including Linux. The scheduling occurs when tasks perform certain 
      system calls and on timer handler activation (each 8254 interrupt) (for an explanation of timers 
-     and interrupts see  [RTAI Timers and Interrupts](https://www.rtai.org/userfiles/documentation/documents/guide.htm#timers_irq) ). The scheduler makes it elected the first highest priority task in a READY state. RTAI considers the priority `0` as the highest priority 
+     and interrupts see  [RTAI Timers and Interrupts](https://www.rtai.org/userfiles/documentation/documents/guide.htm#timers_irq) ). The scheduler makes it elected the first highest priority task in a READY state. **RTAI** considers the priority `0` as the highest priority 
      and `0x3fffFfff` the lowest. Linux is given priority `0x7fffFfff`. Given a priority level, 
      the first initialized task will be the first elected and will run to completion unless a task with a 
-     higher priority is elected or it terminates or the task calls a blocking system function. RTAI 
+     higher priority is elected or it terminates or the task calls a blocking system function. **RTAI** 
      supports both periodic and oneshot mode for the real time scheduler. 
      You have three different schedulers: 
      - UP , only for uniprocessors 
@@ -215,7 +218,7 @@ Let's examine one by one.
      All the functions can be used with any scheduler. Note that when you load rtai_sched, 
      automatically rtai is mounted.
 
-3) The module that implements the fifo services for RTAI. Many applications appear to 
+3) The module that implements the fifo services for **RTAI**. Many applications appear to 
      benefit from a synergy between the real-time system side and the Linux side, for example 
      for managing the data logging and displaying. Simple fifo buffers are used to do this; they are 
      called real time fifos. The real-time task interface includes creation, destruction, reading and 
@@ -224,14 +227,14 @@ Let's examine one by one.
      only non blocking put/get, so that any different policy should be enforced by using appropriate 
      user handler functions. Available are an old and a new (strongly recommended) fifo 
      implementation. The last one is based on the mailboxes concepts, symmetrically usable from 
-     kernel modules and Linux processes. Even if fifos are strictly no more required in RTAI, 
+     kernel modules and Linux processes. Even if fifos are strictly no more required in **RTAI**, 
      because of the availability of LXRT (see below), fifos are kept for both compatibility reasons 
      and because they are very useful tools to be used to communicate with interrupt handlers, 
      since they do not require any scheduler to be installed. In this sense 
      you can see this new implementation of fifos as a kind of universal form of device drivers, 
      since once you have your interrupt handler installed you can use fifo services to do all the rest.
 
-4) The RTAI specific module that allows sharing memory among different real time tasks and 
+4) The **RTAI** specific module that allows sharing memory among different real time tasks and 
      Linux processes, simoultaneously (it is another mechanism available to users, in addition 
      to fifos). The services are symmetrical, i.e. the same calls can be used both in real time tasks, 
       i.e. within the kernel, and Linux processes. The first allocation does a real allocation, any 
@@ -242,24 +245,24 @@ Let's examine one by one.
      name.
 
 5) The LX(Linux)RT(RealTime) module, which implements services to make available any 
-     of the RTAI schedulers functions to Linux processes, so that a fully symmetric implementation 
+     of the **RTAI** schedulers functions to Linux processes, so that a fully symmetric implementation 
      of real time services is possible. To state it more clearly, that means that you can share memory, 
      send messages, use semaphores and timings: Linux<->Linux, Linux<->RTAI and, naturally, 
      RTAI<->RTAI.
 
-6) Posix RTAI modules. rtai_pthread.o provides hard real-time threads, where each 
-       thread is a RTAI task. All threads execute in the same address space and hence can work 
+6) Posix **RTAI** modules. rtai_pthread.o provides hard real-time threads, where each 
+       thread is a **RTAI** task. All threads execute in the same address space and hence can work 
        concurrently on shared data. rtai_pqueue.o provides kernel-safe message queues.
 
 ## Timers and Interrupts
 
-Correct timing and interrupt management represent the really challenge of a real time system, and hence of RTAI. But how can I get time from a PC? What is an interrupt and how can I manage it? From now on we will refer to Intel architecture (RTAI 1.3 runs on x86 machines).
+Correct timing and interrupt management represent the really challenge of a real time system, and hence of **RTAI**. But how can I get time from a PC? What is an interrupt and how can I manage it? From now on we will refer to Intel architecture (**RTAI** 1.3 runs on x86 machines).
 
 ### Timers
 
 UPs provide a specific chip to solve the problem of generating accurate time delays under software control. It is called 8254 and is a programmable interval timer/counter, that can be treated as an array of four I/O ports in the system software (from `0x40` to `0x43`). Three are indipendent 16-bit counters and the fourth is a control register for mode programming. The programmer configures the 8254 to match his/her requirements (select the mode) and programs one of the counters for the desired delay. After this delay, the 8254 will interrupt the CPU. Note that the counters are fully indipendent, so each counter may operate in a different mode. Linux programs the timer with mode 2 (rate generator, periodic pace) and loads the counter0 with the macro HZ defined in `/usr/src/linux/include/asm/param.h` (usually 100 hz). The counter 2 is used instead for beeping frequency.
 
-RTAI provides both a periodic (mode 2 of the 8254) and a oneshot timer (mode 0), using the counter0 to load the initial count. In the oneshot mode the clock is reprogrammed every interrupt, while in the periodic one it is programmed only at beginning and then generates interrupts periodically. It is up to you which one to choose in relation to the application at hand. The periodic mode is much more efficient when you have one or many (but with a common period) tasks that take regular samples, while the onsehot mode is more flexible, because it allows for example to time several tasks with no large common divisor in their periods or to trigger off some external event. Note that in the RTAI oneshot mode the time is measured on the base of the CPU time stamp clock (TSC) and neither on the 8254 chip, which is used only to generate oneshot interrupts. This allows to reprogram the counter with only 2 I/O instructions, i.e. approximately 3 us. Since the TSC is not available on 486 machines for them RTAI uses a form of emulation of the "read time stamp clock" (rdtsc) assembler instruction based on counter2 of the 8254. So you can use RTAI also on such machines. Be warned that the oneshot timer on 486 is a performance overkill because of the need of reading the tsc, i.e. 8254 counter2 in this case, 2/3 times. MPs provides another facility to get time. In addition to 8254 chip, which is one per box, there is a LOCAL APIC per CPU.
+**RTAI** provides both a periodic (mode 2 of the 8254) and a oneshot timer (mode 0), using the counter0 to load the initial count. In the oneshot mode the clock is reprogrammed every interrupt, while in the periodic one it is programmed only at beginning and then generates interrupts periodically. It is up to you which one to choose in relation to the application at hand. The periodic mode is much more efficient when you have one or many (but with a common period) tasks that take regular samples, while the onsehot mode is more flexible, because it allows for example to time several tasks with no large common divisor in their periods or to trigger off some external event. Note that in the **RTAI** oneshot mode the time is measured on the base of the CPU time stamp clock (TSC) and neither on the 8254 chip, which is used only to generate oneshot interrupts. This allows to reprogram the counter with only 2 I/O instructions, i.e. approximately 3 us. Since the TSC is not available on 486 machines for them **RTAI** uses a form of emulation of the "read time stamp clock" (rdtsc) assembler instruction based on counter2 of the 8254. So you can use **RTAI** also on such machines. Be warned that the oneshot timer on 486 is a performance overkill because of the need of reading the tsc, i.e. 8254 counter2 in this case, 2/3 times. MPs provides another facility to get time. In addition to 8254 chip, which is one per box, there is a LOCAL APIC per CPU.
 
 ### Interrupts
 
@@ -397,7 +400,7 @@ rmmod rtai
  
 RTAI example 2
 
-This example is like the first one, but it uses the shared memory, instead of fifos, to communicate between Linux and the RTAI-layer. The common data space is declared in the header fileparameters.h.
+This example is like the first one, but it uses the shared memory, instead of fifos, to communicate between Linux and the **RTAI**-layer. The common data space is declared in the header fileparameters.h.
 
 ```
 # MAKEFILE -------------------------

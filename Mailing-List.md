@@ -1,8 +1,11 @@
+---
+---
+
 # Mailing lists
 
 ***
 
-[Homepage](index.html) &nbsp;
+[Homepage](index) &nbsp;
     [About RTAI](About-RTAI) &nbsp;
     [About RTAI-Lab](About-RTAI-Lab) &nbsp;
     [Documentation](Documentation) &nbsp;
@@ -11,7 +14,7 @@
 
 ***
 
-The RTAI users' mailing list is the primary communications medium for discussion of all kinds of problems and ideas. If you need help, if you want to contribute something to the project, or if you have found a bug the mailing list is the first address to contact. 
+The **RTAI** users' mailing list is the primary communications medium for discussion of all kinds of problems and ideas. If you need help, if you want to contribute something to the project, or if you have found a bug the mailing list is the first address to contact. 
 
 - If you want to subscribe please use the [web frontend](https://mail.rtai.org/cgi-bin/mailman/listinfo/rtai) to the list.
 - If you want to unsubscribe please use the [web frontend](https://mail.rtai.org/cgi-bin/mailman/listinfo/rtai) (go to the end of page to find the unsubscribe procedure).
