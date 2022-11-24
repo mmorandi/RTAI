@@ -3,16 +3,6 @@
 
 # About RTAI-Lab
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
 
 The **RTAI-Lab** project provides a tool chain to develop block diagrams that can be compiled and executed on the [RTAI](http://www.rtai.org/) real-time Linux operating system. 
 **RTAI-Lab** is included in the **RTAI** distribution.
@@ -27,7 +17,7 @@ See also:
     [RTAI-TARGET-HOWTO](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAILAB/RTAI-TARGET-HOWTO.txt)
     [RTAI-Lab repository](https://github.com/mmorandi/RTAI/tree/main/userfiles/downloads/RTAILAB)
 
-![RTAI-Lab in action](userfiles/images/coverfigsmall4.gif)
+![RTAI-Lab in action]({{ "userfiles/images/coverfigsmall4.gif" | relative_url }})
 
 ### RTAI-Lab main features
 

@@ -3,17 +3,6 @@
 
 # RTAI team
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
-
 - [Roberto Bucher](mailto:roberto.bucher@supsi.ch)
 - [Lorenzo Dozio](mailto:lorenzo.dozio@polimi.it)
 - [Daniele Gasperini](mailto:daniele.gasperini@elet.polimi.it)

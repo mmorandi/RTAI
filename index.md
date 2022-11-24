@@ -3,16 +3,6 @@
 
 # RTAI - Real Time Application Interface Official Website 
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
 
 This is the homepage of **RTAI** - the **RealTime Application Interface** for **Linux** - which lets you write applications with strict timing constraints for your favorite operating system. Like Linux itself, this software is a community effort. If you are interested in what it does, just join our mailing list and help our team!
 
@@ -46,4 +36,4 @@ Two development branches are available:
 
 # RTAI Mailing Lists
 - [Search / View Archives](https://mail.rtai.org/pipermail/rtai/?&MMN_position=21:21)
-- [Subscribe / Unsubscribe instructions](Mailing-List)
+- [Subscribe / Unsubscribe instructions]({{ "Mailing-List" | relative_url }})

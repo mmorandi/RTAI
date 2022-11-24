@@ -3,16 +3,6 @@
 
 # Mailing lists
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
 
 The **RTAI** users' mailing list is the primary communications medium for discussion of all kinds of problems and ideas. If you need help, if you want to contribute something to the project, or if you have found a bug the mailing list is the first address to contact. 
 

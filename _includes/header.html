@@ -5,12 +5,12 @@
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     {%- if page.icon -%}
       <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
-        <img src="{{ page.icon }}" alt="{{ site.title }} logo" /> {{ site.title | escape }}
+        <img src="{{ page.icon.name | relative_url }}" alt="{{ site.title }} logo" width="{{ page.icon.width }}"/> {{ site.title | escape }}
       </a>
     {%- else -%}
       <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
     {%- endif -%}
-
+<!--
     {%- if page_paths -%}
       <nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -32,5 +32,24 @@
         </div>
       </nav>
     {%- endif -%}
+-->
   </div>
+<div class="wrapper">
+<p>
+<hr />
+</p>
+<p></p>
+<p>
+<a href="{{ "/index" | relative_url }}">Homepage</a>  &nbsp;&nbsp;
+    <a href="{{ "/About-RTAI" | relative_url }}">About RTAI</a>  &nbsp;&nbsp;
+    <a href="{{ "/About-RTAI-Lab" | relative_url }}">About RTAI-Lab</a>  &nbsp;&nbsp;
+    <a href="{{ "/Documentation" | relative_url }}">Documentation</a>  &nbsp;&nbsp;
+    <a href="{{ "/RTAI-Team" | relative_url }}">RTAI Team</a>  &nbsp;&nbsp;
+    <a href="{{ "/Announcements" | relative_url }}">Announcements</a>  &nbsp;&nbsp;
+</p>
+<hr />
+
+</div>
+
+
 </header>

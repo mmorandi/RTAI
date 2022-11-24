@@ -3,16 +3,6 @@
 
 # Privacy
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
 
 ## Italian version
 I sistemi informatici e le procedure software preposte al funzionamento di questo sito web

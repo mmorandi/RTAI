@@ -3,16 +3,6 @@
 
 # Announcements
 
-***
-
-[Homepage](index) &nbsp;
-    [About RTAI](About-RTAI) &nbsp;
-    [About RTAI-Lab](About-RTAI-Lab) &nbsp;
-    [Documentation](Documentation) &nbsp;
-    [RTAI Team](RTAI-Team) &nbsp;
-    [Announcements](Announcements)
-
-***
 
 - May 19, 2021: **RTAI 5.3 released**
   <br>The tarball is available at [rtai-5.3.tar.bz2](https://github.com/mmorandi/RTAI/raw/main/userfiles/downloads/RTAI/rtai-5.3.tar.bz2)
