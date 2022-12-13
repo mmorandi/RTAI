@@ -36,4 +36,4 @@ Two development branches are available:
 
 # RTAI Mailing Lists
 - [Search / View Archives](https://mail.rtai.org/pipermail/rtai/?&MMN_position=21:21)
-- [Subscribe / Unsubscribe instructions]({{ "Mailing-List" | relative_url }})
+- [Subscribe / Unsubscribe instructions]({{ "Mailing-List.html" | relative_url }})
