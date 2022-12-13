@@ -27,7 +27,7 @@ during their normal operation, some personal data whose transmission is implicit
 in the use of Internet communication protocols. These data are not collected 
 with the aim of associating them to known users; however, by their very nature, they could
 allow to identify users through processing and association with data held by third parties. 
-Teh collected data include the IP addresses or domain names of the computers used by users 
+Collected data include the IP addresses or domain names of the computers used by users 
 who connect to the site, the URI (Uniform Resource Identifier) addresses of the requested resources, 
 the time of the request, the method used to submit the request to the server, 
 the size of the file obtained in response, the numerical code indicating the status 
