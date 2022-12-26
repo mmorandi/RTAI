@@ -1,0 +1,5 @@
+<map id="LXRT module." name="LXRT module.">
+<area shape="rect" id="node1" title="LXRT services (soft&#45;hard real time in user space)" alt="" coords="5,42,111,67"/>
+<area shape="rect" id="node2" href="$group__shm.html" title=" " alt="" coords="253,5,411,45"/>
+<area shape="rect" id="node3" href="$group__tasklets.html" title="The tasklets module adds an interesting feature along the line, pioneered by RTAI,..." alt="" coords="300,70,364,95"/>
+</map>

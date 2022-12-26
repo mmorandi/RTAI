@@ -1,0 +1,11 @@
+<map id="base/ipc/mbx/mbx.c" name="base/ipc/mbx/mbx.c">
+<area shape="rect" id="node1" title="Mailbox functions." alt="" coords="238,5,378,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,79,104,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="128,79,235,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="259,79,357,104"/>
+<area shape="rect" id="node5" title=" " alt="" coords="382,79,493,104"/>
+<area shape="rect" id="node6" href="$rtai__registry_8h.html" title=" " alt="" coords="517,79,619,104"/>
+<area shape="rect" id="node7" href="$rtai__nam2num_8h.html" title="Conversion between 6 characters strings and unsigned long identifiers." alt="" coords="510,152,626,177"/>
+<area shape="rect" id="node8" title=" " alt="" coords="491,225,557,251"/>
+<area shape="rect" id="node9" title=" " alt="" coords="581,225,646,251"/>
+</map>

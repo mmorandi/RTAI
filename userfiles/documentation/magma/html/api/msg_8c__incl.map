@@ -1,0 +1,12 @@
+<map id="base/ipc/msg/msg.c" name="base/ipc/msg/msg.c">
+<area shape="rect" id="node1" title="Message handling functions." alt="" coords="297,5,437,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,79,104,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="128,79,235,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="259,79,352,104"/>
+<area shape="rect" id="node5" title=" " alt="" coords="377,79,482,104"/>
+<area shape="rect" id="node6" title=" " alt="" coords="506,79,617,104"/>
+<area shape="rect" id="node7" href="$rtai__registry_8h.html" title=" " alt="" coords="641,79,743,104"/>
+<area shape="rect" id="node8" href="$rtai__nam2num_8h.html" title="Conversion between 6 characters strings and unsigned long identifiers." alt="" coords="634,152,750,177"/>
+<area shape="rect" id="node9" title=" " alt="" coords="615,225,681,251"/>
+<area shape="rect" id="node10" title=" " alt="" coords="705,225,770,251"/>
+</map>

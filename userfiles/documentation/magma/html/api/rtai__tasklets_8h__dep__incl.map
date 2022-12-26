@@ -1,0 +1,4 @@
+<map id="base/include/rtai_tasklets.h" name="base/include/rtai_tasklets.h">
+<area shape="rect" id="node1" title="Interface of the mini LXRT RTAI tasklets module." alt="" coords="5,5,188,31"/>
+<area shape="rect" id="node2" href="$tasklets_8c.html" title="Implementation of the RTAI tasklets module." alt="" coords="16,79,177,104"/>
+</map>

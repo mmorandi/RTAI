@@ -1,0 +1,7 @@
+<map id="base/include/rtai_shm.h" name="base/include/rtai_shm.h">
+<area shape="rect" id="node1" title="Interface of the RTAI SHM module." alt="" coords="259,5,421,31"/>
+<area shape="rect" id="node2" href="$rtai__scb_8h.html" title="SCB stand for Shared (memory) Circular Buffer." alt="" coords="5,79,163,104"/>
+<area shape="rect" id="node3" href="$shm_8c.html" title="Implementation of the RTAI SHM module." alt="" coords="187,79,327,104"/>
+<area shape="rect" id="node4" href="$malloc_2malloc_8c.html" title="Dynamic memory allocation services." alt="" coords="351,79,497,104"/>
+<area shape="rect" id="node5" href="$sched_2malloc_8c.html" title="Dynamic memory allocation services." alt="" coords="521,79,663,104"/>
+</map>

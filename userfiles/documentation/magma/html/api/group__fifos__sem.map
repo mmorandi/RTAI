@@ -1,0 +1,5 @@
+<map id="Semaphores." name="Semaphores.">
+<area shape="rect" id="node1" href="$group__fifos.html" title="See the general overview of RTAI fifos." alt="" coords="5,22,136,47"/>
+<area shape="rect" id="node3" title="RTAI FIFO semaphore functions." alt="" coords="247,22,345,47"/>
+<area shape="rect" id="node2" href="$group__fifos__ipc.html" title="RTAI FIFO communication functions." alt="" coords="456,22,657,47"/>
+</map>
