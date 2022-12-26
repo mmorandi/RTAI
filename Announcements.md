@@ -10,7 +10,9 @@
     * For what changed/new see the Changelog.
     * Enjoy!
     * sha512sum:
-b17d58f1b80b6ec1595b7d2827920a3cc5f4baaa6056b833b195350ff24a041776a355472f3130eb3e0e381f8af28b596d9444e6afc9555dcf9e4e87418fba01 
+b17d58f1b80b6ec1595b7d2827920a3cc5f4baaa6056b833
+b195350ff24a041776a355472f3130eb3e0e381f8af28b59
+6d9444e6afc9555dcf9e4e87418fba01 
 
 - May 2019: **RTAI 5.2 released**
   <br>The tarball is available at [rtai-5.2.tar.bz2](https://github.com/mmorandi/RTAI/raw/main/userfiles/downloads/RTAI/rtai-5.2.tar.bz2)
