@@ -1,4 +1,0 @@
-<map id="base/include/rtai_fifos.h" name="base/include/rtai_fifos.h">
-<area shape="rect" id="node1" title="Interface of the RTAI FIFO module." alt="" coords="5,5,167,31"/>
-<area shape="rect" id="node2" href="$fifos_8c.html" title="Implementation of the RTAI FIFO module." alt="" coords="16,79,156,104"/>
-</map>

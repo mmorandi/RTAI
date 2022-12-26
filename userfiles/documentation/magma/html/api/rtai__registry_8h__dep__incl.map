@@ -1,8 +1,0 @@
-<map id="base/include/rtai_registry.h" name="base/include/rtai_registry.h">
-<area shape="rect" id="node1" title=" " alt="" coords="314,5,493,31"/>
-<area shape="rect" id="node2" href="$mbx_8c.html" title="Mailbox functions." alt="" coords="5,79,145,104"/>
-<area shape="rect" id="node3" href="$msg_8c.html" title="Message handling functions." alt="" coords="169,79,309,104"/>
-<area shape="rect" id="node4" href="$sem_8c.html" title="Semaphore functions." alt="" coords="333,79,473,104"/>
-<area shape="rect" id="node5" href="$shm_8c.html" title="Implementation of the RTAI SHM module." alt="" coords="497,79,637,104"/>
-<area shape="rect" id="node6" href="$api_8c.html" title="Common scheduling function." alt="" coords="661,79,783,104"/>
-</map>
