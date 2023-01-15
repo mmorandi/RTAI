@@ -47,6 +47,11 @@ defaults:
       icon: 
         name: "/logo_rtai_small.jpg"
         width: "50%"
+      keywords:
+        - RTAI
+        - linux
+        - Real Time
+        - GPL
 
 # Exclude from processing.
 # The following items will not be processed, by default.
