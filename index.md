@@ -35,5 +35,5 @@ Two development branches are available:
 - [RTAI Users contributions](https://github.com/mmorandi/RTAI/blob/main/userfiles/downloads/RTAICONTRIB)
 
 # RTAI Mailing Lists
-- [Search / View Archives](https://mail.rtai.org/pipermail/rtai/?&MMN_position=21:21)
+- [Search / View Archives](https://www.freelists.org/archive/rtai/)
 - [Subscribe / Unsubscribe instructions]({{ "Mailing-List.html" | relative_url }})
