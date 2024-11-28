@@ -3,7 +3,14 @@
 
 # RTAI - Real Time Application Interface Official Website 
 
+---
 
+### **It is with profound sadness that we share the news of the passing of Prof. Paolo Mantegazza, the driving force behind the Real-Time Application Interface (RTAI) project.**
+
+### **Prof. Mantegazza will be greatly missed, but his contributions will continue to inspire us all.**
+---
+
+ <br>
 This is the homepage of **RTAI** - the **RealTime Application Interface** for **Linux** - which lets you write applications with strict timing constraints for your favorite operating system. Like Linux itself, this software is a community effort. If you are interested in what it does, just join our mailing list and help our team!
 
 **RTAI** supports:
