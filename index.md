@@ -5,7 +5,7 @@
 
 ---
 
-### **It is with profound sadness that we share the news of the passing of Prof. Paolo Mantegazza, the driving force behind the Real-Time Application Interface (RTAI) project.**
+### **It is with profound sadness that we share the news of the passing of Prof. Paolo Mantegazza, the driving force behind the RTAI project.**
 
 ### **Prof. Mantegazza will be greatly missed, but his contributions will continue to inspire us all.**
 ---
